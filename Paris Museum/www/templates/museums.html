@@ -1,0 +1,12 @@
+<ion-view view-title="博物馆">
+  <ion-content>
+    <ion-list>
+      <a ng-repeat="museum in museums" href="#/app/museums/{{museum.id}}" >
+      	<div class="item item-image museumimg mybutton" style="background-image:url({{museum.img}})">
+			<div class="museumdivider">{{museum.name}}</div>
+		</div>
+        
+      </a>
+    </ion-list>
+  </ion-content>
+</ion-view>

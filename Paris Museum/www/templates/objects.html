@@ -1,0 +1,21 @@
+<ion-view view-title="展品查找">
+  <ion-content >
+  	<div class="bar item-input-inset searchbar">
+	    <label class="item-input-wrapper searchbar-input">
+	      	<input type="text" placeholder="展品名称/编号">
+	      	 <button class="button button-clear" ng-click="clearSearch()">x</button>
+	    </label>
+    	<button class="button button-calm button-search">查找</button>
+  	</div>
+  	<div class="objectlist">
+  		<div class="list">
+    		<a class="item item-avatar" ng-repeat="object in objects" href="#">
+    			<img src="{{object.imgsmall}}">
+    			<span class="objectname">{{object.name}}</span>
+    			<p class="objectfrenchname">{{object.frenchname}}</p>
+    			<img class="enterbutton" src="img/big/enterbutton@2x.png">
+    		</a>
+		</ul>
+  	</div>
+  </ion-content>
+</ion-view>

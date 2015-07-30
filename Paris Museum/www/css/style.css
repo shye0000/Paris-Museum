@@ -1,0 +1,387 @@
+/* Empty. Add your own CSS if you like */
+@-webkit-keyframes pulse {
+    0% {
+      -webkit-transform: scale(1) rotate(0deg); 
+    }
+    50% {
+      -webkit-transform: scale(1.1) rotate(-5deg); 
+    }
+    100% {
+      -webkit-transform: scale(1) rotate(0deg); 
+    }
+}
+@-o-keyframes pulse {
+    0% {
+      -o-transform: scale(1) rotate(0deg); 
+    }
+    50% {
+      -o-transform: scale(1.1) rotate(-5deg); 
+    }
+    100% {
+      -o-transform: scale(1) rotate(0deg); 
+    }
+}
+@-moz-keyframes pulse {
+    0% {
+      -moz-transform: scale(1) rotate(0deg); 
+    }
+    50% {
+      -moz-transform: scale(1.1) rotate(-5deg); 
+    }
+    100% {
+      -moz-transform: scale(1) rotate(0deg); 
+    }
+}
+@keyframes pulse {
+    0% {
+      transform: scale(1) rotate(0deg); 
+    }
+    50% {
+      transform: scale(1.1) rotate(-5deg); 
+    }
+    100% {
+      transform: scale(1) rotate(0deg); 
+    }
+}
+
+@-webkit-keyframes bump {
+  0% {
+      top: 0;
+  }
+  5% {
+      top: 3px;
+  }
+  10% {
+      top:0;
+  }
+  100% {
+      top:0;
+  }
+}
+@-o-keyframes bump {
+  0% {
+      top: 0;
+  }
+  5% {
+      top: 3px;
+  }
+  10% {
+      top:0;
+  }
+  100% {
+      top:0;
+  }
+}
+@-moz-keyframes bump {
+  0% {
+      top: 0;
+  }
+  5% {
+      top: 3px;
+  }
+  10% {
+      top:0;
+  }
+  100% {
+      top:0;
+  }
+}
+@keyframes bump {
+  0% {
+      top: 0;
+  }
+  5% {
+      top: 3px;
+  }
+  10% {
+      top:0;
+  }
+  100% {
+      top:0;
+  }
+}
+
+.navtitle{
+	
+}
+!input::-webkit-input-placeholder {
+!  color: red !important;
+!}
+!input:-moz-placeholder {
+!  color: red !important;
+!}
+!input:-ms-input-placeholder { /* IE10+ */
+!  color: red !important;
+!}
+a:link {
+    text-decoration: none;
+}
+.nopadding{
+	padding: 0!important;
+}
+.nomargin{
+	margin: 0!important;
+}
+.noborder{
+	border-width: 0!important;
+}
+.container{
+	background-color: #3A2D3E;
+}
+.menubar{
+	!top: 25px;
+}
+ion-content, .sidebartoptitle{
+	margin-top: 25px !important;
+	padding-top: 0 !important;
+}
+.bar-header{
+	border-bottom-width: 0; 
+}
+.bar-header > * {
+  !margin-top: 25px !important;
+}
+.nav-bar-block, .bar {
+  background-color: inherit !important;
+}
+.scroll-content{
+  !top: 0!important;
+}
+fake-statusbar {
+  height: 25px;
+  box-sizing: border-box;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 4;
+  color: #fff;
+  !background-color: #31C3F6;
+}
+.mybutton{
+}
+.mybutton:active{
+    !-webkit-animation: pulse 1s ease 0s infinite normal;
+    !-o-animation: pulse 1s ease 0s infinite normal;
+    !-moz-animation: pulse 1s ease 0s infinite normal;
+    !animation: pulse 1s ease 0s infinite normal;
+    -moz-opacity: 0.60;
+	-khtml-opacity: 0.60;
+	opacity: 0.60;
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha"(Opacity=60);
+	filter: progid:DXImageTransform.Microsoft.Alpha(opacity=60);
+	filter:alpha(opacity=60);
+}
+.custombar{
+	margin-top: 25px !important;
+}
+
+.image-half {
+	height:50vh;
+	background-color: #5E4C66;
+	text-overflow: hidden;
+	border-width: 0;
+	background-image: url("../img/big/backgroundparis@2x.png");
+	background-size: cover;
+}
+.image-half img:first-child {
+	width: 100%;
+	!height:100%;
+}
+.description{
+	height: 60px;
+	background-color: rgba(40, 95, 143, 0.5);
+	color: white;
+	border-width: 0;
+	font-size: 14px;
+	padding: 10px;
+	position: absolute;
+	bottom: 0;
+	text-overflow: initial;
+  	white-space: initial;
+  	text-align: left;
+}
+.paristitle{
+	position: absolute;
+	width: 100%;
+	bottom: 25vh;
+	color: white;
+	font-style: italic;
+	font-size: 60px;
+	text-align: center;
+}
+.divider-blue{
+	height: 5px;
+	border-width: 0;
+  	background-color: #31C3F6;
+  	padding: 0;
+}
+#others{
+	!top:-60px;
+	border-width: 0;
+  	padding: 0;
+  	background-color: rgba(255,255, 255, 0);
+  	text-overflow: initial;
+  	white-space: initial;
+}
+.parisbuttons{
+	height:50vh;
+	background: #5E4C66;
+	border-width: 0;
+	padding: 0;
+}
+
+.parisbackground{
+	height: 20vh;
+	background-color: #5E4C66;
+	border-width: 1px;
+	border-color: #4F3F55;
+
+}
+.parisbackground img:first-child{
+	height: 20vh;
+	width: auto;
+	padding: 2vh;
+}
+.button1{
+	border-left-width:0;
+	border-top-width:0;
+}
+.button2{
+	border-right-width:0;
+	border-top-width:0;
+}
+.button3{
+	border-left-width:0;
+	border-bottom-width:0; 
+}
+.button4{
+	border-right-width:0;
+	border-bottom-width:0;
+}
+.title-center{
+	min-width: initial!important;
+}
+
+
+.museumdivider{
+	position: absolute;
+	width: 100%;
+	background-color: rgba(36, 130, 176, 0.6);
+	color: white;
+	font-size: 16px;
+	height: 40px;
+	bottom: 0;
+	text-align: left;
+	padding-top: 10px;
+	padding-left: 3vh;
+}
+.museumimg{
+	border-width: 0;
+	height:30vh;
+	background-size: cover;
+
+}
+
+
+
+
+
+
+
+.museumrow{
+	height: 30vh;
+	overflow: hidden;
+	text-align: center;
+}
+.museumserviceimg{
+	height: 100%;
+}
+.museumservicebutton{
+	height: 35px;
+	width: 100px;
+	border-color: #3FC1F2;
+	border-width: 1px;
+	border-style: solid;
+	border-radius: 2px;
+	font-size: 17px;
+	color: white;
+	padding-top: 6px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 11vh;
+  	cursor: pointer;
+}
+.museumservicebutton:active{
+	-moz-opacity: 0.50;
+	-khtml-opacity: 0.50;
+	opacity: 0.50;
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha"(Opacity=50);
+	filter: progid:DXImageTransform.Microsoft.Alpha(opacity=50);
+	filter:alpha(opacity=50);
+}
+
+
+.button-search{
+	width: 90px;
+	height: 36px!important;
+	border-radius: 3px;
+	min-height: initial!important;
+	line-height: initial;
+	font-size: 16px!important;
+	background-color: #3FC1F2!important;
+}
+.searchbar{
+    width: 100%;
+    z-index: 4;
+	padding: 30px 20px;
+	border-width: 0;
+}
+.searchbar, .searchbar-input{
+	background-color: #5E4C66!important;
+}
+.searchbar-input{
+	border-width: 1px;
+	border-style: solid;
+	border-color: #3FC1F2;
+	height: 36px;
+}
+.searchbar-input input[type="text"]{
+	color:white;
+}
+.objectlist{
+	background-color: #D5D5D5;
+}
+.objectlist .item{
+	background-color: inherit;
+	border-color: #8B8989;
+	height: 100px;
+	padding-left: 120px;
+	padding-top: 25px;
+	padding-right: 50px;
+	border-top-width: 0px;
+}
+.objectlist .enterbutton{
+	height:16px;
+	position: absolute;
+	right: 30px;
+	top: 42px;
+}
+.objectlist .item-avatar > img:first-child{
+	border-radius: 3px;
+	height: 80px;
+	width: 80px;
+	max-height: initial;
+	max-width: initial;
+	top: 9px;
+	left: 20px;
+}
+
+.objectlist .objectname, .objectlist .objectfrenchname{
+	color: #4A3852;
+	font-size: 16px;
+}
+
+.objectlist .objectfrenchname{
+	padding-top: 5px;
+}
