@@ -60,6 +60,27 @@ angular.module('starter.controllers', ['ngAudio'])
         StatusBar.backgroundColorByHexString("#31C3F6");
       }
   });
+  w = window,
+    d = document,
+    e = d.documentElement,
+    g = d.getElementsByTagName('body')[0],
+    x = w.innerWidth || e.clientWidth || g.clientWidth,
+    y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+  document.getElementById("parisimg").style.height = (y - 44)/2 + 'px';
+  document.getElementById("parisbutton").style.height = (y - 44)/2 + 'px';
+  document.getElementById("paristitle").style.bottom = (y - 44)/4 + 'px';
+  var elems = document.getElementsByClassName("parisbackground");
+  for(var i = 0; i < elems.length; i++) {
+    elems[i].style.height= (y - 44)/4 + 'px';
+  }
+  elems = document.getElementsByClassName("parisbackgroundimg");
+  for(var i = 0; i < elems.length; i++) {
+    elems[i].style.height= (y - 44)/5 + 'px';
+    elems[i].style.top= '50%';
+    elems[i].style.marginTop= '-'+(y - 44)/10 + 'px';
+    elems[i].style.left= '50%';
+    elems[i].style.marginLeft= '-'+(y - 44)/10 + 'px';
+  }
 })
 
 .controller('MuseumCtrl', function($scope, $stateParams, $rootScope, museum) {
@@ -70,6 +91,20 @@ angular.module('starter.controllers', ['ngAudio'])
       StatusBar.backgroundColorByHexString("#31C3F6");
     }
   });
+  w = window,
+    d = document,
+    e = d.documentElement,
+    g = d.getElementsByTagName('body')[0],
+    x = w.innerWidth || e.clientWidth || g.clientWidth,
+    y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+  var elems = document.getElementsByClassName("museumrow");
+  for(var i = 0; i < elems.length; i++) {
+    elems[i].style.height= (y - 44)/3 + 'px';
+  }
+  elems = document.getElementsByClassName("museumservicebutton");
+  for(var i = 0; i < elems.length; i++) {
+    elems[i].style.marginTop= (y - 44)/6-18 + 'px';
+  }  
   $scope.museum = museum;
 })
 
@@ -111,6 +146,8 @@ angular.module('starter.controllers', ['ngAudio'])
     g = d.getElementsByTagName('body')[0],
     x = w.innerWidth || e.clientWidth || g.clientWidth,
     y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+  document.getElementById("introplayerblock").style.height = y*0.65 + 'px';
+  document.getElementById("introdescription").style.marginTop = y*0.65 + 'px';
   document.getElementById("playbutton").style.display = 'none';
   document.getElementById("pausebutton").style.display = 'play';
   document.getElementById("currentpoint").style.left = "0%";

@@ -177,7 +177,6 @@ fake-statusbar {
 }
 
 .image-half {
-	height:45vh;
 	background-color: #5E4C66;
 	text-overflow: hidden;
 	border-width: 0;
@@ -204,7 +203,6 @@ fake-statusbar {
 .paristitle{
 	position: absolute;
 	width: 100%;
-	bottom: 25vh;
 	color: white;
 	font-style: italic;
 	font-size: 60px;
@@ -225,23 +223,21 @@ fake-statusbar {
   	white-space: initial;
 }
 .parisbuttons{
-	height:55vh;
 	background: #5E4C66;
 	border-width: 0;
 	padding: 0;
 }
 
 .parisbackground{
-	height: 24.5vh;
 	background-color: #5E4C66;
 	border-width: 1px;
 	border-color: #4F3F55;
 
 }
 .parisbackground img:first-child{
-	height: 24vh;
+	position: absolute;
 	width: auto;
-	padding: 2vh;
+	!padding: 0px;
 }
 .button1{
 	border-left-width:0;
@@ -274,11 +270,11 @@ fake-statusbar {
 	bottom: 0;
 	text-align: left;
 	padding-top: 10px;
-	padding-left: 3vh;
+	padding-left: 20px;
 }
 .museumimg{
 	border-width: 0;
-	height:31.2vh;
+	width: 100%;
 	background-size: cover;
 
 }
@@ -290,7 +286,6 @@ fake-statusbar {
 
 
 .museumrow{
-	height: 31.2vh;
 	overflow: hidden;
 	text-align: center;
 }
@@ -309,7 +304,6 @@ fake-statusbar {
 	padding-top: 6px;
 	margin-left: auto;
 	margin-right: auto;
-	margin-top: 11vh;
   	cursor: pointer;
 }
 .museumservicebutton:active{
@@ -395,7 +389,6 @@ ion-content.objectlistwithsearchbar{
 
 .introplayerblock{
 	position: relative;
-	height: 70vh;
 	background-color: #5E4C66;
 	!text-overflow: hidden;
 	border-width: 0;
@@ -518,7 +511,7 @@ ion-content.objectlistwithsearchbar{
 	left: 0px;
 }
 ion-content.introdescription{
-	margin-top: 70vh;
+	!margin-top: 70vh;
 	background-color: #3A2D3E;
 	text-align: center;
 	color: white;

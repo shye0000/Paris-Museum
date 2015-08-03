@@ -65,7 +65,30 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'angular
     }
   });
 })
+.directive('backImg', function(){
+    return function(scope, element, attrs){
+        var url = attrs.backImg;
+        element.css({
+            'background-image': 'url(' + url +')'
+        });
+    };
+})
+.directive('myRepeatDirective', function() {
+  return function(scope, element, attrs) {
 
+    w = window,
+    d = document,
+    e = d.documentElement,
+    g = d.getElementsByTagName('body')[0],
+    x = w.innerWidth || e.clientWidth || g.clientWidth,
+    y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+    var height = (y - 44)/3 + 'px';
+    //alert(height);
+    console.log(scope);
+    angular.element(element).css('height', (y - 44)/3 + 'px');
+
+  };
+})
 
 .factory('MediaSrv', function($q, $ionicPlatform, $window) {
   var service = {
@@ -146,7 +169,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'angular
 .service('ObjectsService', function($q) {
   return {
     objects: [
-      { id: 1, name: '蒙娜丽莎', frenchname:'Mona Lisa', img: 'img/big/monalisa@2x.png', museumid: 1, imgsmall: 'img/big/object-example.png', introbackground: 'img/big/intro-background-monalisa@2x.png', description:'《蒙娜丽莎》是一幅享有盛誉的肖像画杰作。它代表达·芬奇的最高艺术成就，成功地塑造了资本主义上升时期一位城市有产阶级的妇女形象。画中人物坐姿优雅，笑容微妙，背景山水幽深茫茫，淋漓尽致地发挥了画家那奇特的烟雾状“无界渐变着色法”般的笔法。画家力图使人物的丰富内心感情和美丽的外形达到巧妙的结合，对于人像面容中眼角唇边等表露感情的关键部位，也特别着重掌握精确与含蓄的辩证关系，达到神韵之境，从而使蒙娜丽莎的微笑具有一种神秘莫测的千古奇韵，那如梦似的妩媚微笑，被不少美术史家称为“神秘的微笑”。', audio:'audio/test/Evergreen Tree-Cliff Richard.mp3'},
+      { id: 1, name: '蒙娜丽莎', frenchname:'Mona Lisa', img: 'img/big/monalisa@2x.png', museumid: 1, imgsmall: 'img/big/object-example.png', introbackground: 'img/big/intro-background-monalisa@2x.png', description:'《蒙娜丽莎》是一幅享有盛誉的肖像画杰作。它代表达·芬奇的最高艺术成就，成功地塑造了资本主义上升时期一位城市有产阶级的妇女形象。画中人物坐姿优雅，笑容微妙，背景山水幽深茫茫，淋漓尽致地发挥了画家那奇特的烟雾状“无界渐变着色法”般的笔法。画家力图使人物的丰富内心感情和美丽的外形达到巧妙的结合，对于人像面容中眼角唇边等表露感情的关键部位，也特别着重掌握精确与含蓄的辩证关系，达到神韵之境，从而使蒙娜丽莎的微笑具有一种神秘莫测的千古奇韵，那如梦似的妩媚微笑，被不少美术史家称为“神秘的微笑”。', audio:'audio/test/Evergreen\ Tree-Cliff\ Richard.mp3'},
       { id: 2, name: '米洛岛的维纳斯', frenchname:'Vénus de Milo', img: 'img/big/monalisa@2x.png', museumid: 1, imgsmall: 'img/big/object-example.png', introbackground: 'img/big/intro-background-monalisa@2x.png', description:'《蒙娜丽莎》是一幅享有盛誉的肖像画杰作。它代表达·芬奇的最高艺术成就，成功地塑造了资本主义上升时期一位城市有产阶级的妇女形象。画中人物坐姿优雅，笑容微妙，背景山水幽深茫茫，淋漓尽致地发挥了画家那奇特的烟雾状“无界渐变着色法”般的笔法。画家力图使人物的丰富内心感情和美丽的外形达到巧妙的结合，对于人像面容中眼角唇边等表露感情的关键部位，也特别着重掌握精确与含蓄的辩证关系，达到神韵之境，从而使蒙娜丽莎的微笑具有一种神秘莫测的千古奇韵，那如梦似的妩媚微笑，被不少美术史家称为“神秘的微笑”。', audio:'audio/test/minion_ring_ring.mp3'},
       { id: 3, name: '萨莫色雷斯的胜利女神', frenchname:'La Victoire de Samothrace', img: 'img/big/monalisa@2x.png', museumid: 1, imgsmall: 'img/big/object-example.png', introbackground: 'img/big/intro-background-monalisa@2x.png', description:'《蒙娜丽莎》是一幅享有盛誉的肖像画杰作。它代表达·芬奇的最高艺术成就，成功地塑造了资本主义上升时期一位城市有产阶级的妇女形象。画中人物坐姿优雅，笑容微妙，背景山水幽深茫茫，淋漓尽致地发挥了画家那奇特的烟雾状“无界渐变着色法”般的笔法。画家力图使人物的丰富内心感情和美丽的外形达到巧妙的结合，对于人像面容中眼角唇边等表露感情的关键部位，也特别着重掌握精确与含蓄的辩证关系，达到神韵之境，从而使蒙娜丽莎的微笑具有一种神秘莫测的千古奇韵，那如梦似的妩媚微笑，被不少美术史家称为“神秘的微笑”。', audio:'audio/test/minion_ring_ring.mp3'},
       { id: 4, name: '荷拉斯兄弟之誓', frenchname:'Le Serment des Horaces', img: 'img/big/monalisa@2x.png', museumid: 1, imgsmall: 'img/big/object-example.png', introbackground: 'img/big/intro-background-monalisa@2x.png', description:'《蒙娜丽莎》是一幅享有盛誉的肖像画杰作。它代表达·芬奇的最高艺术成就，成功地塑造了资本主义上升时期一位城市有产阶级的妇女形象。画中人物坐姿优雅，笑容微妙，背景山水幽深茫茫，淋漓尽致地发挥了画家那奇特的烟雾状“无界渐变着色法”般的笔法。画家力图使人物的丰富内心感情和美丽的外形达到巧妙的结合，对于人像面容中眼角唇边等表露感情的关键部位，也特别着重掌握精确与含蓄的辩证关系，达到神韵之境，从而使蒙娜丽莎的微笑具有一种神秘莫测的千古奇韵，那如梦似的妩媚微笑，被不少美术史家称为“神秘的微笑”。', audio:'audio/test/minion_ring_ring.mp3'},

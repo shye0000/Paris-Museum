@@ -1,5 +1,5 @@
 <ion-view view-title="{{name}}">
-  	<div class="bar bar-subheader introplayerblock" style="background-image: url({{introobject.introbackground}})">
+  	<div id="introplayerblock" class="bar bar-subheader introplayerblock" back-img="{{introobject.introbackground}}">
 	  		<div class="player">
 	  		</div>
 	  		<div class="playbutton" id="playbutton" ng-click='playAudio()'><img src="img/big/buttonplay@2x.png"></div>
@@ -16,7 +16,7 @@
  			</div>
 
   	</div>
-  	<ion-content class="introdescription">
+  	<ion-content id="introdescription" class="introdescription">
   		<div class="objecttitle">{{introobject.name}} {{introobject.frenchname}}</div>
   		<div class="objectdescription">{{introobject.description}}</div>
 
