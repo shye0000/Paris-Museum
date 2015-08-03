@@ -1,0 +1,24 @@
+<ion-view view-title="{{name}}">
+  	<div class="bar bar-subheader introplayerblock" style="background-image: url({{introobject.introbackground}})">
+	  		<div class="player">
+	  		</div>
+	  		<div class="playbutton" id="playbutton" ng-click='playAudio()'><img src="img/big/buttonplay@2x.png"></div>
+	  		<div class="playbutton pausebutton" id="pausebutton" ng-click='pauseAudio()'><img src="img/big/pausebutton@2x.png"></div>
+	  		<div class="playbutton laterbutton" ng-click='later()'><img src="img/big/laterbutton@2x.png"></div>
+	  		<div class="playbutton ealierbutton" ng-click='ealier()'><img src="img/big/ealierbutton@2x.png"></div>
+	  		<div id="locationbutton" class="playbutton locationbutton" ng-click=''><img src="img/big/locationbutton@2x.png"></div>
+	  		<div class="currentpoint" id="currentpoint" ng-touchstart="touchStart($event)" hm-dragstart= "dragStart($event)" hm-dragend= "dragEnd($event)" hm-drag-right= "drag($event)" hm-drag-left= "drag($event)"><img id="currentpointimg" src="img/big/currentpoint@2x.png"></div>
+ 			<div id="timeline" class="timeline"></div>
+ 			<div id="currenttimeline"></div>
+ 			<div id="timer" class="playbutton timer" style="font-size: 0;">
+ 			<span id="currentTime"></span>
+ 			<span class="allduration" id="duration"></span>
+ 			</div>
+
+  	</div>
+  	<ion-content class="introdescription">
+  		<div class="objecttitle">{{introobject.name}} {{introobject.frenchname}}</div>
+  		<div class="objectdescription">{{introobject.description}}</div>
+
+  	</ion-content>
+</ion-view>

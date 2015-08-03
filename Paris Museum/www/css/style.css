@@ -132,7 +132,7 @@ a:link {
 	!top: 25px;
 }
 ion-content, .sidebartoptitle{
-	margin-top: 25px !important;
+	!margin-top: 25px !important;
 	padding-top: 0 !important;
 }
 .bar-header{
@@ -173,11 +173,11 @@ fake-statusbar {
 	filter:alpha(opacity=60);
 }
 .custombar{
-	margin-top: 25px !important;
+	!margin-top: 25px !important;
 }
 
 .image-half {
-	height:50vh;
+	height:45vh;
 	background-color: #5E4C66;
 	text-overflow: hidden;
 	border-width: 0;
@@ -225,21 +225,21 @@ fake-statusbar {
   	white-space: initial;
 }
 .parisbuttons{
-	height:50vh;
+	height:55vh;
 	background: #5E4C66;
 	border-width: 0;
 	padding: 0;
 }
 
 .parisbackground{
-	height: 20vh;
+	height: 24.5vh;
 	background-color: #5E4C66;
 	border-width: 1px;
 	border-color: #4F3F55;
 
 }
 .parisbackground img:first-child{
-	height: 20vh;
+	height: 24vh;
 	width: auto;
 	padding: 2vh;
 }
@@ -278,7 +278,7 @@ fake-statusbar {
 }
 .museumimg{
 	border-width: 0;
-	height:30vh;
+	height:31.2vh;
 	background-size: cover;
 
 }
@@ -290,7 +290,7 @@ fake-statusbar {
 
 
 .museumrow{
-	height: 30vh;
+	height: 31.2vh;
 	overflow: hidden;
 	text-align: center;
 }
@@ -349,6 +349,9 @@ fake-statusbar {
 .searchbar-input input[type="text"]{
 	color:white;
 }
+ion-content.objectlistwithsearchbar{
+	margin-top: 60px;
+}
 .objectlist{
 	background-color: #D5D5D5;
 }
@@ -384,4 +387,149 @@ fake-statusbar {
 
 .objectlist .objectfrenchname{
 	padding-top: 5px;
+}
+
+
+
+
+
+.introplayerblock{
+	position: relative;
+	height: 70vh;
+	background-color: #5E4C66;
+	!text-overflow: hidden;
+	border-width: 0;
+	background-size: cover;
+	background-repeat: no-repeat;
+	padding: 0;
+	width: 100%;
+}
+.player{
+	height:65px;
+	width: 100%;
+	background-color: rgba(44, 29, 47, 0.5);
+	border-width: 0;
+	padding: 10px;
+	position: absolute;
+	bottom: 0;
+	text-overflow: initial;
+  	white-space: initial;
+  	text-align: left;
+}
+.playbutton.timer{
+	border-width: 0;
+	position: absolute;
+	bottom: 16px;
+	left: 10%;
+	!text-overflow: initial;
+  	!white-space: initial;
+  	!text-align: left;
+  	
+}
+.playbutton.timer #currentTime{
+	color: white;
+	font-size: 15px;
+}
+.playbutton.timer .allduration{
+	color: #3FC1F2;
+	font-size: 15px;
+}
+.playbutton{
+	border-width: 0;
+	position: absolute;
+	bottom: 2.5px;
+	left: 50%;
+	margin-left: -25px;
+	!text-overflow: initial;
+  	!white-space: initial;
+  	!text-align: left;
+}
+.playbutton img{
+	height: 46px;
+}
+.playbutton.pausebutton{
+	height: 46px;
+	width: 46px;
+	margin-left: -23px;
+	bottom: 8px;
+	!background-color: black;
+}
+.playbutton.pausebutton img{
+	margin-top: 11px;
+	margin-left: 14px;
+	height: 24px;
+}
+.playbutton.laterbutton img, .playbutton.ealierbutton img{
+	margin-top: 15px;
+	margin-left: 9px; 
+	height: 16px;
+}
+.playbutton.laterbutton{
+	!background-color: black;
+	height: 46px;
+	width: 46px;
+	left: 65%;
+	margin-left: -23px;
+	bottom: 8px;
+}
+.playbutton.ealierbutton{
+	!background-color: black;
+	height: 46px;
+	width: 46px;
+	left: 35%;
+	bottom: 8px;
+}
+.playbutton.locationbutton{
+	left: 94%;
+	bottom: 12px;
+}
+.playbutton.locationbutton img{
+	height: 34px;
+}
+#currentpoint{
+	bottom: 50px;
+	position: absolute;
+	left: 10%;
+	z-index: 5;
+	height: 36px;
+	width: 36px;
+	!background-color: black;
+
+}
+#currentpoint img{
+	height: 16px;
+	margin-top: 10px;
+
+}
+#currenttimeline{
+	background-color: #3FC1F2;
+	width:10%;
+	height:5px;
+	bottom: 65px;
+	position: absolute;
+}
+.timeline{
+	height: 5px;
+	width: 100%;
+	background-color: white;
+	border-width: 0;
+	position: absolute;
+	bottom: 65px;
+	left: 0px;
+}
+ion-content.introdescription{
+	margin-top: 70vh;
+	background-color: #3A2D3E;
+	text-align: center;
+	color: white;
+}
+.introdescription .objecttitle{
+	padding-top: 15px;
+	font-size: 18px;
+	margin-bottom: 15px;
+}
+.introdescription .objectdescription{
+	padding: 0 35px;
+	margin-bottom: 20px;
+	text-align: justify;
 }

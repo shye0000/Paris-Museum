@@ -1,4 +1,4 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers', ['ngAudio'])
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout, $rootScope) {
 
@@ -41,86 +41,260 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('museumsCtrl', function($scope, $rootScope) {
+.controller('museumsCtrl', function($scope, $rootScope, museums) {
   $scope.$on('$ionicView.beforeEnter', function() {
-      $rootScope.barColor = '#2482B4';
-      $rootScope.fakebarColor = '#31C3F6';
+    $rootScope.barColor = '#2482B4';
+    $rootScope.fakebarColor = '#31C3F6';
+    if (window.StatusBar) {
+      StatusBar.backgroundColorByHexString("#31C3F6");
+    }
   });
-  $scope.museums = [
-    { name: '卢浮宫 Musée du louvre', img: 'img/big/louvre@2x.png', id: 1 },
-    { name: '奥赛 Musée d\'orsay', img: 'img/big/orsay@2x.png', id: 2 },
-    { name: '蓬皮杜 Centre pompidou', img: 'img/big/pompidou@2x.png', id: 3 },
-    { name: '蓬皮杜 Centre pompidou', img: 'img/big/pompidou@2x.png', id: 3 }
-  ];
+  $scope.museums = museums;
 })
 
 .controller('ParisCtrl', function($scope, $rootScope) {
   $scope.$on('$ionicView.beforeEnter', function() {
       $rootScope.barColor = '#3A2D3E';
       $rootScope.fakebarColor = '#31C3F6';
+      if (window.StatusBar) {
+        StatusBar.backgroundColorByHexString("#31C3F6");
+      }
   });
-  /*$scope.playlists = [
-    { title: 'Reggae', id: 1 },
-    { title: 'Chill', id: 2 },
-    { title: 'Dubstep', id: 3 },
-    { title: 'Indie', id: 4 },
-    { title: 'Rap', id: 5 },
-    { title: 'Cowbell', id: 6 }
-  ];*/
 })
-.controller('MuseumCtrl', function($scope, $stateParams, $rootScope) {
+
+.controller('MuseumCtrl', function($scope, $stateParams, $rootScope, museum) {
   $scope.$on('$ionicView.beforeEnter', function() {
-      $rootScope.barColor = '#2482B4';
-      $rootScope.fakebarColor = '#31C3F6';
+    $rootScope.barColor = '#2482B4';
+    $rootScope.fakebarColor = '#31C3F6';
+    if (window.StatusBar) {
+      StatusBar.backgroundColorByHexString("#31C3F6");
+    }
   });
-  var id = $stateParams.museumId;
-  var museums = [
-    { name: '卢浮宫 Musée du louvre', img: 'img/big/louvre@2x.png', id: 1, imgobject: 'img/big/object-louvre@2x.png', imginfo: 'img/big/info-louvre@2x.png', imgintro: 'img/big/intro-louvre@2x.png' },
-    { name: '奥赛 Musée d\'orsay', img: 'img/big/orsay@2x.png', id: 2,  imgobject: 'img/big/object-louvre@2x.png', imginfo: 'img/big/info-louvre@2x.png', imgintro: 'img/big/intro-louvre@2x.png'},
-    { name: '蓬皮杜 Centre pompidou', img: 'img/big/pompidou@2x.png', id: 3,  imgobject: 'img/big/object-louvre@2x.png', imginfo: 'img/big/info-louvre@2x.png', imgintro: 'img/big/intro-louvre@2x.png'},
-    { name: '蓬皮杜 Centre pompidou', img: 'img/big/pompidou@2x.png', id: 3,  imgobject: 'img/big/object-louvre@2x.png', imginfo: 'img/big/info-louvre@2x.png', imgintro: 'img/big/intro-louvre@2x.png'}
-  ];
-  for (index = 0; index < museums.length; ++index) {
-    if (museums[index].id == id) {
-      $scope.museum = museums[index];
-      break;
+  $scope.museum = museum;
+})
+
+.controller('ObjectsCtrl', function($scope, $stateParams, $rootScope, $cordovaStatusbar, objectsOfMuseum) {
+  $scope.$on('$ionicView.beforeEnter', function() {
+    $rootScope.barColor = '#4A3852';
+    $rootScope.fakebarColor = '#3A2D3E';
+    if (window.StatusBar) {
+      StatusBar.backgroundColorByHexString("#3A2D3E");
+    }
+  });
+  $scope.objects = objectsOfMuseum;
+})
+
+.controller('IntroAudioCtrl',function($scope, $stateParams, $rootScope, $cordovaStatusbar, $ionicSideMenuDelegate, introobject, ngAudio, MediaSrv){
+  $scope.$on('$ionicView.beforeEnter', function() {
+    $rootScope.barColor = '#2482B4';
+    $rootScope.fakebarColor = '#31C3F6';
+    if (window.StatusBar) {
+      StatusBar.backgroundColorByHexString("#31C3F6");
+    }
+  });
+  $scope.$on('$ionicView.afterEnter', function() {
+    $scope.playAudio();
+  });
+  $scope.$on('$ionicView.beforeLeave', function() {
+    if(mymedia) {
+      mymedia.stop();
+      
+      mymedia.release();
+    }if(mediaTimer){
+      clearInterval(mediaTimer);
+    }
+  });
+  //$scope.playing = false;
+   w = window,
+    d = document,
+    e = d.documentElement,
+    g = d.getElementsByTagName('body')[0],
+    x = w.innerWidth || e.clientWidth || g.clientWidth,
+    y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+  document.getElementById("playbutton").style.display = 'none';
+  document.getElementById("pausebutton").style.display = 'play';
+  document.getElementById("currentpoint").style.left = "0%";
+  document.getElementById("currenttimeline").style.width = "0%";
+  $scope.dragging = false;
+  $scope.duration = null;
+  mediaTimer = null;
+  var mymedia = null; 
+  if ($stateParams.museumId) {
+    $scope.introobject = introobject;
+    $scope.name="展馆介绍";
+    document.getElementById("locationbutton").style.display = "none";
+    document.getElementById("timer").style.left = "80%";
+  }
+  else {
+    $scope.introobject = introobject;
+    $scope.name=$scope.introobject.name + ' ' + $scope.introobject.frenchname;
+  }
+  document.getElementById("currentTime").innerHTML = "00:00";
+
+  MediaSrv.loadMedia($scope.introobject.audio).then(function(media) {
+    mymedia = media;
+    
+  });
+  var counter = 0;
+  var timerDur = setInterval(function() {
+    counter = counter + 100;
+    if(counter > 2000) {clearInterval(timerDur);}
+    var dur = mymedia.getDuration();
+    if (dur > 0) {
+      clearInterval(timerDur);
+      var minutes = Math.floor(dur / 60);
+      minutes = minutes > 9 ? minutes: "0" + minutes;
+      var seconds = Math.floor(dur - minutes * 60);
+      seconds = seconds > 9 ? seconds: "0" + seconds;
+      document.getElementById("duration").innerHTML = "/" + minutes + ":" + seconds;
+      $scope.durationstring = minutes + ":" + seconds;
+      $scope.duration = dur;
+    }
+  }, 100);
+  $scope.playAudio = function() {
+    if(mymedia) {
+      mymedia.play();
+      $scope.played = true;
+      mediaTimer = setInterval(function () {
+    // get media position
+        mymedia.getCurrentPosition(
+          // success callback
+          function (position) {
+            if (position > -1) {
+              var minutes = Math.floor(position / 60);
+              minutes = minutes > 9 ? minutes: "0" + minutes;
+              var seconds = Math.floor(position - minutes * 60);
+              seconds = seconds > 9 ? seconds: "0" + seconds;
+              document.getElementById("currentTime").innerHTML = minutes + ":" + seconds;
+              if (!$scope.dragging) {
+                document.getElementById("currentpoint").style.left = (position/$scope.duration)*100+'%';
+                document.getElementById("currenttimeline").style.width = (position/$scope.duration)*100+'%';
+              }
+              if ((minutes + ":" + seconds) == $scope.durationstring) {
+                clearInterval(mediaTimer);
+                mymedia.pause();
+                mymedia.seekTo(0);
+                $scope.played = false;
+                document.getElementById("currentTime").innerHTML = "00:00";
+                document.getElementById("playbutton").style.display = 'block';
+                document.getElementById("pausebutton").style.display = 'none';
+                document.getElementById("currentpoint").style.left = "0%";
+                document.getElementById("currenttimeline").style.width = "0%";
+                
+              }
+            }
+          },
+          // error callback
+          function (e) {
+              console.log("Error getting pos=" + e);
+          }
+        );
+      }, 100);
+      document.getElementById("playbutton").style.display = 'none';
+      document.getElementById("pausebutton").style.display = 'block';
     }
   }
-})
-.controller('ObjectsCtrl', function($scope, $stateParams, $rootScope) {
-  $scope.$on('$ionicView.beforeEnter', function() {
-      $rootScope.barColor = '#4A3852';
-      $rootScope.fakebarColor = '#3A2D3E';
-  });
-  var objects = [
-    { id: 1, name: '斯芬克斯像', frenchname:'', img: 'img/big/', museumid: 1, imgsmall: 'img/big/object-example.png', description:'', audio:''},
-    { id: 2, name: '米洛岛的维纳斯', frenchname:'Vénus de Milo', img: 'img/big/', museumid: 1, imgsmall: 'img/big/object-example.png', description:'', audio:''},
-    { id: 3, name: '萨莫色雷斯的胜利女神', frenchname:'La Victoire de Samothrace', img: 'img/big/', museumid: 1, imgsmall: 'img/big/object-example.png', description:'', audio:''},
-    { id: 4, name: '荷拉斯兄弟之誓', frenchname:'Le Serment des Horaces', img: 'img/big/', museumid: 1, imgsmall: 'img/big/object-example.png', description:'', audio:''},
-    { id: 5, name: '拿破仑一世与约瑟芬皇后加冕礼', frenchname:'', img: 'img/big/', museumid: 1, imgsmall: 'img/big/object-example.png', description:'', audio:''},
-    { id: 6, name: '大宫女', frenchname:'La Grande Odalisque', img: 'img/big/', museumid: 1, imgsmall: 'img/big/object-example.png', description:'', audio:''},
-    { id: 7, name: '加纳的婚礼', frenchname:'Les Noces de Cana', img: 'img/big/', museumid: 1, imgsmall: 'img/big/object-example.png', description:'', audio:''},
-    { id: 8, name: '奥赛展品示例1', frenchname:'Orsay example 1', img: 'img/big/', museumid: 2, imgsmall: 'img/big/object-example.png', description:'', audio:''},
-    { id: 9, name: '奥赛展品示例2', frenchname:'Orsay example 2', img: 'img/big/', museumid: 2, imgsmall: 'img/big/object-example.png', description:'', audio:''},
-    { id: 10, name: '奥赛展品示例3', frenchname:'Orsay example 3', img: 'img/big/', museumid: 2, imgsmall: 'img/big/object-example.png', description:'', audio:''},
-    { id: 11, name: '奥赛展品示例4', frenchname:'Orsay example 4', img: 'img/big/', museumid: 2, imgsmall: 'img/big/object-example.png', description:'', audio:''},
-    { id: 12, name: '奥赛展品示例5', frenchname:'Orsay example 5', img: 'img/big/', museumid: 2, imgsmall: 'img/big/object-example.png', description:'', audio:''},
-    { id: 13, name: '奥塞尔女郎', frenchname:'Dame d\'Auxerre', img: 'img/big/', museumid: 1, imgsmall: 'img/big/object-example.png', description:'', audio:''},
-    { id: 14, name: '让柏的骑士', frenchname:'Cavalier Rampin', img: 'img/big/', museumid: 1, imgsmall: 'img/big/object-example.png', description:'', audio:''},
-    { id: 15, name: '拉伯德的头像', frenchname:'Tête Laborde', img: 'img/big/', museumid: 1, imgsmall: 'img/big/object-example.png', description:'', audio:''},
-    { id: 16, name: '克尼德的阿弗洛狄忒', frenchname:'Aphrodite de Cnide', img: 'img/big/', museumid: 1, imgsmall: 'img/big/object-example.png', description:'', audio:''},
-    { id: 17, name: '奥赛展品示例6', frenchname:'Orsay example 6', img: 'img/big/', museumid: 2, imgsmall: 'img/big/object-example.png', description:'', audio:''},
-    { id: 18, name: '奥赛展品示例7', frenchname:'Orsay example 7', img: 'img/big/', museumid: 2, imgsmall: 'img/big/object-example.png', description:'', audio:''},
-    { id: 19, name: '奥赛展品示例8', frenchname:'Orsay example 8', img: 'img/big/', museumid: 2, imgsmall: 'img/big/object-example.png', description:'', audio:''},
-    { id: 20, name: '奥赛展品示例9', frenchname:'Orsay example 9', img: 'img/big/', museumid: 2, imgsmall: 'img/big/object-example.png', description:'', audio:''},
-    { id: 21, name: '奥赛展品示例10', frenchname:'Orsay example 10', img: 'img/big/', museumid: 2, imgsmall: 'img/big/object-example.png', description:'', audio:''},
-    { id: 22, name: '蓬皮杜展品示例1', frenchname:'Pompidou example 1', img: 'img/big/', museumid: 3, imgsmall: 'img/big/object-example.png', description:'', audio:''},
-    { id: 23, name: '蓬皮杜展品示例2', frenchname:'Pompidou example 2', img: 'img/big/', museumid: 3, imgsmall: 'img/big/object-example.png', description:'', audio:''}
-  ];
-  $scope.objects = [];
-  for (index = 0; index < objects.length; ++index) {
-    if (objects[index].museumid == $stateParams.museumId) {
-      $scope.objects.push(objects[index]);
+  $scope.pauseAudio = function() {
+    if(mymedia) {
+      mymedia.pause();
+      clearInterval(mediaTimer);
+      document.getElementById("playbutton").style.display = 'block';
+      document.getElementById("pausebutton").style.display = 'none';
     }
-  } 
+  }
+  $scope.later = function() {
+    if(mymedia) {
+      mymedia.getCurrentPosition(
+        // success callback
+        function (position) {
+            if (position > -1) {
+              var newPosition = position*1000+5000;
+              if (newPosition >= $scope.duration*1000) newPosition = ($scope.duration-2)*1000;
+              var percentage = newPosition/($scope.duration*1000);
+              document.getElementById("currentpoint").style.left = percentage*100 + "%";
+              document.getElementById("currenttimeline").style.width = percentage*100 + "%";
+              mymedia.seekTo(newPosition);
+              var minutes = Math.floor((newPosition/1000) / 60);
+              minutes = minutes > 9 ? minutes: "0" + minutes;
+              var seconds = Math.floor((newPosition/1000) - minutes * 60);
+              seconds = seconds > 9 ? seconds: "0" + seconds;
+              document.getElementById("currentTime").innerHTML = minutes + ":" + seconds;
+            }
+        },
+        // error callback
+        function (e) {
+            console.log("Error getting pos=" + e);
+        }
+      );
+    }
+  }
+  $scope.ealier = function() {
+    if(mymedia) { 
+      mymedia.getCurrentPosition(
+        // success callback
+        function (position) {
+          if (position > -1) {
+            var newPosition = position*1000-5000;
+            if (newPosition <= 0) newPosition = 0;
+            var percentage = newPosition/($scope.duration*1000);
+            document.getElementById("currentpoint").style.left = percentage*100 + "%";
+            document.getElementById("currenttimeline").style.width = percentage*100 + "%";
+            mymedia.seekTo(newPosition);
+            var minutes = Math.floor((newPosition/1000) / 60);
+            minutes = minutes > 9 ? minutes: "0" + minutes;
+            var seconds = Math.floor((newPosition/1000) - minutes * 60);
+            seconds = seconds > 9 ? seconds: "0" + seconds;
+            document.getElementById("currentTime").innerHTML = minutes + ":" + seconds;
+
+          }
+        },
+        // error callback
+        function (e) {
+            console.log("Error getting pos=" + e);
+        }
+      );
+    }
+  }
+  $scope.touchStart = function(event) {
+    document.getElementById("currentpointimg").style.height = "28px";
+    document.getElementById("currentpointimg").style.marginTop = "-2px";
+    document.getElementById("currenttimeline").style.height = "11px";
+    document.getElementById("timeline").style.height = "11px";
+    document.getElementById("currenttimeline").style.bottom = "68px";
+    document.getElementById("timeline").style.bottom = "68px";
+  }
+  $scope.dragStart = function(event) {
+    $scope.dragging = true;
+    $ionicSideMenuDelegate.canDragContent(false);
+    $scope.leftcurrentpoint = document.getElementById("currentpoint").style.left;
+    $scope.widthcurrenttimeline = document.getElementById("currenttimeline").style.width;
+    
+  }
+  $scope.dragEnd = function(event) {
+    document.getElementById("currentpointimg").style.height = "16px";
+    document.getElementById("currentpointimg").style.marginTop = "10px";
+    document.getElementById("currenttimeline").style.height = "5px";
+    document.getElementById("timeline").style.height = "5px";
+    document.getElementById("currenttimeline").style.bottom = "65px";
+    document.getElementById("timeline").style.bottom = "65px";
+    document.getElementById("currentpoint").style.left = (Number($scope.leftcurrentpoint.slice(0, -1))/100) * x + event.deltaX + "px";
+    document.getElementById("currenttimeline").style.width = (Number($scope.widthcurrenttimeline.slice(0, -1))/100) * x + event.deltaX + "px";
+    var percentage = ((Number($scope.leftcurrentpoint.slice(0, -1)) / 100) * x + event.deltaX) / x;
+    var newPosition = percentage * $scope.duration * 1000;
+    if (newPosition >= $scope.duration * 1000) newPosition = ($scope.duration-2) * 1000;
+    mymedia.seekTo(newPosition);
+    var minutes = Math.floor((newPosition / 1000) / 60);
+    minutes = minutes > 9 ? minutes: "0" + minutes;
+    var seconds = Math.floor((newPosition / 1000) - minutes * 60);
+    seconds = seconds > 9 ? seconds: "0" + seconds;
+    document.getElementById("currentTime").innerHTML = minutes + ":" + seconds;
+    $scope.dragging = false;
+    $ionicSideMenuDelegate.canDragContent(true);
+  }
+
+  $scope.drag = function(event) {
+    document.getElementById("currentpoint").style.left = (Number($scope.leftcurrentpoint.slice(0, -1))/100) * x + event.deltaX + "px";
+    document.getElementById("currenttimeline").style.width = (Number($scope.widthcurrenttimeline.slice(0, -1))/100) * x + event.deltaX + "px";
+
+  }
 });
