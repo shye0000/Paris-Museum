@@ -134,6 +134,7 @@ a:link {
 ion-content, .sidebartoptitle{
 	!margin-top: 25px !important;
 	padding-top: 0 !important;
+	!margin: 0 !important;
 }
 .bar-header{
 	border-bottom-width: 0; 
@@ -232,7 +233,14 @@ fake-statusbar {
 	background-color: #5E4C66;
 	border-width: 1px;
 	border-color: #4F3F55;
+	position: relative;
+	border-style: solid;
+	text-align: center;
+	!border-collapse: collapse;
 
+}
+.parisrow{
+	margin-top: 0 !important;
 }
 .parisbackground img:first-child{
 	position: absolute;
@@ -259,7 +267,9 @@ fake-statusbar {
 	min-width: initial!important;
 }
 
-
+.museumscontent{
+	margin:0!important;
+}
 .museumdivider{
 	position: absolute;
 	width: 100%;
@@ -276,6 +286,7 @@ fake-statusbar {
 	border-width: 0;
 	width: 100%;
 	background-size: cover;
+	margin: 0;
 
 }
 
