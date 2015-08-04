@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' *; style-src 'self' 'unsafe-inline' *; script-src 'self' 'unsafe-inline' 'unsafe-eval' *">
     <title></title>
 
     <link href="lib/ionic/css/ionic.css" rel="stylesheet">
@@ -11,18 +12,19 @@
     <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
     <link href="css/ionic.app.css" rel="stylesheet">
     -->
-
+    <!--<script src="http://maps.googleapis.com/maps/api/js?key=[AIzaSyAdWf9dbIUnwXPOt_32K_K1B7uWmpOwddE]&sensor=true"></script>-->
+     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA-EnzVppOSkwmYa7tFoM7VhfITXd71Pow&sensor=false"></script>
     <!-- ionic/angularjs js -->
     <script src="lib/ionic/js/ionic.bundle.js"></script>
 
     <!-- cordova script (this will be a 404 during development) -->
+
     <script src="lib/ngTouch.js"></script>
     <script src="lib/hammer.js"></script>
     <script src="lib/angular-gestures-master/dist/gestures.js"></script>
     <script src="lib/ngCordova/dist/ng-cordova.js"></script>
     <script src="lib/angular-audio/app/angular.audio.js"></script>
     <script src="cordova.js"></script>
-
     <!-- your app's js -->
     <script src="js/app.js"></script>
     <script src="js/controllers.js"></script>

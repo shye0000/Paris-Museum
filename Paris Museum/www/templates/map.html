@@ -1,4 +1,36 @@
 <ion-view view-title="地图">
-  <ion-content>
-  </ion-content>
+	<div id="map" data-tap-disabled="true" class="bar bar-subheader map transformable"></div>
+	<ion-content>
+  	</ion-content>
+  	<ion-footer-bar class=" mapbuttons transformable" id="mapbuttonscontainer">
+  		<div class="divider-blue" id="dividermap"></div>
+  		<div id="arrowdown" class="arrowbutton" ng-click="hideButton()"><img src="img/big/arrow_down@2x.png"/></div>
+  		<div id="arrowup" class="arrowbutton" ng-click="showButton()"><img src="img/big/arrow_up@2x.png"/></div>
+  		<div class="buttonscontent">
+	  		<div class="row nopadding  maprow">
+				<div class="col nopadding mapcol">
+					<button class="mybutton">城市地图</button>
+				</div>
+				<div class="col nopadding mapcol">
+					<button class="mybutton">WIFI热点</button>
+				</div>
+			</div>
+			<div class="row nopadding  maprow">
+				<div class="col nopadding mapcol">
+					<button class="mybutton">公共厕所</button>
+				</div>
+				<div class="col nopadding mapcol">
+					<button class="mybutton">景点地图</button>
+				</div>
+			</div>
+			<div class="row nopadding  maprow maprow-last">
+				<div class="col nopadding mapcol">
+					<button class="mybutton">巴黎地铁</button>
+				</div>
+				<div class="col nopadding mapcol">
+					<button class="mybutton">巴黎公交</button>
+				</div>
+			</div>
+		</div>
+	</ion-footer-bar>
 </ion-view>

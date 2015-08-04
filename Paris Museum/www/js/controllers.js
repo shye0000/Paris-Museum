@@ -41,6 +41,71 @@ angular.module('starter.controllers', ['ngAudio'])
   };
 })
 
+.controller('MapCtrl', function($scope, $rootScope, $cordovaStatusbar, $ionicLoading, $ionicSideMenuDelegate) {
+  $scope.$on('$ionicView.beforeEnter', function() {
+    $rootScope.barColor = '#4A3852';
+    $rootScope.fakebarColor = '#3A2D3E';
+    if (window.StatusBar) {
+      StatusBar.backgroundColorByHexString("#3A2D3E");
+    }
+  });
+  $scope.hideButton = function() {
+    document.getElementById("arrowdown").style.display = 'none';
+    document.getElementById("arrowup").style.display = 'block';
+    document.getElementById("map").style.height = (y - 44 - 40)+ 'px';
+    document.getElementById("mapbuttonscontainer").style.height = '40px';
+    google.maps.event.trigger($scope.map, "resize");
+    var elems = document.getElementsByClassName("maprow");
+      for(var i = 0; i < elems.length; i++) {
+      elems[i].style.visibility= 'hidden';
+    }  
+  $ionicSi
+  }
+  $scope.showButton = function() {
+    document.getElementById("arrowdown").style.display = 'block';
+    document.getElementById("arrowup").style.display = 'none';
+    document.getElementById("map").style.height = (y - 44)*0.66 + 'px';
+    document.getElementById("mapbuttonscontainer").style.height = (y - 44)*0.34 + 'px';
+    google.maps.event.trigger($scope.map, "resize");
+    var elems = document.getElementsByClassName("maprow");
+    for(var i = 0; i < elems.length; i++) {
+      elems[i].style.visibility= 'visible';
+    }  
+  }
+  w = window,
+    d = document,
+    e = d.documentElement,
+    g = d.getElementsByTagName('body')[0],
+    x = w.innerWidth || e.clientWidth || g.clientWidth,
+    y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+  document.getElementById("arrowdown").style.display = 'block';
+  document.getElementById("arrowup").style.display = 'none';
+  document.getElementById("map").style.height = (y - 44)*0.66 + 'px';
+  document.getElementById("mapbuttonscontainer").style.height = (y - 44)*0.34 + 'px';
+  var elems = document.getElementsByClassName("maprow");
+  for(var i = 0; i < elems.length; i++) {
+    elems[i].style.height= ((y - 44)*0.34-25)/3 + 'px';
+  }  
+  $ionicSideMenuDelegate.canDragContent(false);
+  //uiGmapGoogleMapApi.then(function(maps) {
+    navigator.geolocation.getCurrentPosition(function(pos) {
+      var myLatlng = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+      var mapOptions = {
+        center: myLatlng,
+        zoom: 12,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      };
+      $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
+      $scope.map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
+      var myLocation = new google.maps.Marker({
+        position: new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude),
+        map: $scope.map,
+        title: "My Location"
+      });
+    });
+  //});  
+})
+
 .controller('museumsCtrl', function($scope, $rootScope, museums) {
   $scope.$on('$ionicView.beforeEnter', function() {
     $rootScope.barColor = '#2482B4';
@@ -139,13 +204,13 @@ angular.module('starter.controllers', ['ngAudio'])
       clearInterval(mediaTimer);
     }
   });
-  //$scope.playing = false;
-   w = window,
+  w = window,
     d = document,
     e = d.documentElement,
     g = d.getElementsByTagName('body')[0],
     x = w.innerWidth || e.clientWidth || g.clientWidth,
     y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+  //$scope.playing = false;
   document.getElementById("introplayerblock").style.height = y*0.65 + 'px';
   document.getElementById("introdescription").style.marginTop = y*0.65 + 'px';
   document.getElementById("playbutton").style.display = 'none';

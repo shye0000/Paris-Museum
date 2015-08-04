@@ -44,7 +44,7 @@ window.Media = function(src, mediaSuccess, mediaError, mediaStatus){
 
 angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'angular-gestures', 'ngTouch'])
 
-.run(function($ionicPlatform, $state, $rootScope, $cordovaStatusbar) {
+.run(function($ionicPlatform, $state, $rootScope) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -61,8 +61,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'angular
       //$cordovawindow.Statusbar.styleHex('#31C3F6');
       //$cordovaStatusbar.hide();
       StatusBar.backgroundColorByHexString("#31C3F6");
+      //$cordovaStatusbar.styleHex('#FF0000');
     
     }
+    console.log("Type of: "+ typeof google);
+    if (typeof google === 'undefined' || typeof google === undefined) {
+      console.log("Google maps unavailable");
+    }
+    console.log('APP STATE DEVICEREADY');
+    
   });
 })
 .directive('backImg', function(){
@@ -240,6 +247,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'angular
 
   }
 })
+/*.config(function(uiGmapGoogleMapApiProvider) {
+    uiGmapGoogleMapApiProvider.configure({
+        //key: 'AIzaSyA-EnzVppOSkwmYa7tFoM7VhfITXd71Pow',
+        key: 'AIzaSyAdWf9dbIUnwXPOt_32K_K1B7uWmpOwddE',        
+        v: '3.17',
+        libraries: 'weather,geometry,visualization'
+    });
+})*/
 .config(function($stateProvider, $urlRouterProvider, hammerDefaultOptsProvider) {
   $stateProvider
 
@@ -263,7 +278,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'angular
     url: '/map',
     views: {
       'menuContent': {
-        templateUrl: 'templates/map.html'
+        templateUrl: 'templates/map.html',
+        controller: 'MapCtrl'
       }
     }
   })
