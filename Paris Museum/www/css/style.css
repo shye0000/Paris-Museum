@@ -566,7 +566,7 @@ ion-content.introdescription{
 .buttonscontent {
 	position: relative;
 	width: 100%;
-	padding: 20px 0 20px 0;
+	padding: 35px 0 20px 0;
 }
 .maprow {
 	!border-top-width: 1px;
@@ -590,17 +590,43 @@ ion-content.introdescription{
 	background-color: rgba(0,0,0,0);
 	font-size: 16px;
 	color: white;
-	height: 50px;
-	width: 150px;
+	height: 36px;
+	width: 140px;
 	position: absolute;
 	top: 50%;
-	margin-top: -25px;
+	margin-top: -19px;
 	left: 50%;
-	margin-left: -75px;
+	margin-left: -70px;
 	border-color: #31C3F6;
 	border-style:solid;
 	border-width: 2px;
 	border-radius: 3px;
+}
+.mytoggle {
+	position: absolute;
+	background-color: rgba(0, 0, 0, 0);
+	border-width: 2px;
+	border-color: #31C3F6;
+	border-radius: 3px;
+	color: white;
+	width: 140px;
+	height: 36px;
+	padding: 0px;
+	top: 50%;
+	margin-top: -19px;
+	left: 50%;
+	margin-left: -70px;
+}
+.mytoggle .toggle {
+	position: relative;
+	right: 0;
+	top: 5px;
+}
+.mytoggle .track {
+	height: 21px;
+}
+.mytoggle .track .handle {
+	height : 17px;
 }
 .mapcol .button:active{
 

@@ -41,7 +41,7 @@ angular.module('starter.controllers', ['ngAudio'])
   };
 })
 
-.controller('MapCtrl', function($scope, $rootScope, $cordovaStatusbar, $ionicLoading, $ionicSideMenuDelegate) {
+.controller('MapCtrl', function($scope, $rootScope, $cordovaStatusbar, $ionicLoading, $ionicSideMenuDelegate, wifi, wc) {
   $scope.$on('$ionicView.beforeEnter', function() {
     $rootScope.barColor = '#4A3852';
     $rootScope.fakebarColor = '#3A2D3E';
@@ -58,8 +58,7 @@ angular.module('starter.controllers', ['ngAudio'])
     var elems = document.getElementsByClassName("maprow");
       for(var i = 0; i < elems.length; i++) {
       elems[i].style.visibility= 'hidden';
-    }  
-  $ionicSi
+    }
   }
   $scope.showButton = function() {
     document.getElementById("arrowdown").style.display = 'block';
@@ -72,6 +71,50 @@ angular.module('starter.controllers', ['ngAudio'])
       elems[i].style.visibility= 'visible';
     }  
   }
+  $scope.$watch('wc.checked', function(newValue, oldValue) {
+    console.log('wc Change: ' + newValue);
+    if (newValue == true) {
+      for(var i = 0; i < wc[0].features.length; i++) {
+        console.log(wc[0].features[i]);
+        //elems[i].style.height= ((y - 44)*0.34-45)/3 + 'px';
+        var point = new google.maps.Marker({
+          position: new google.maps.LatLng(wc[0].features[i].properties.geom_x_y[0], wc[0].features[i].properties.geom_x_y[1]),
+          map: $scope.map,
+          //icon: 'img/big/wifi-marker.png',
+          title: "My Location"
+        });
+        $scope.wcmarkers.push(point);
+      }        
+    }
+    if (newValue == false) {
+      for (var i = 0; i < $scope.wcmarkers.length; i++) {
+        $scope.wcmarkers[i].setMap(null);
+      }
+    }
+  });
+  $scope.$watch('wifi.checked', function(newValue, oldValue) {
+    console.log('wifi Change: ' + newValue);
+    if (newValue == true) {
+      for(var i = 0; i < wifi[0].features.length; i++) {
+        console.log(wifi[0].features[i]);
+        //elems[i].style.height= ((y - 44)*0.34-45)/3 + 'px';
+        var point = new google.maps.Marker({
+          position: new google.maps.LatLng(wifi[0].features[i].properties.geo_coordinates[0], wifi[0].features[i].properties.geo_coordinates[1]),
+          map: $scope.map,
+          icon: 'img/big/wifi-marker.png',
+          title: "My Location"
+        });
+        $scope.wifimarkers.push(point);
+      }        
+    }
+    if (newValue == false) {
+      for (var i = 0; i < $scope.wifimarkers.length; i++) {
+        $scope.wifimarkers[i].setMap(null);
+      }
+    }
+  });
+  $scope.wifimarkers = [];
+  $scope.wcmarkers = [];
   w = window,
     d = document,
     e = d.documentElement,
@@ -84,25 +127,26 @@ angular.module('starter.controllers', ['ngAudio'])
   document.getElementById("mapbuttonscontainer").style.height = (y - 44)*0.34 + 'px';
   var elems = document.getElementsByClassName("maprow");
   for(var i = 0; i < elems.length; i++) {
-    elems[i].style.height= ((y - 44)*0.34-25)/3 + 'px';
+    elems[i].style.height= ((y - 44)*0.34-45)/3 + 'px';
   }  
   $ionicSideMenuDelegate.canDragContent(false);
   //uiGmapGoogleMapApi.then(function(maps) {
-    navigator.geolocation.getCurrentPosition(function(pos) {
-      var myLatlng = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
-      var mapOptions = {
-        center: myLatlng,
-        zoom: 12,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-      };
-      $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
-      $scope.map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
-      var myLocation = new google.maps.Marker({
-        position: new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude),
-        map: $scope.map,
-        title: "My Location"
-      });
+  navigator.geolocation.getCurrentPosition(function(pos) {
+    var myLatlng = new google.maps.LatLng(48.8534100, 2.3488000);
+    var mapOptions = {
+      center: myLatlng,
+      zoom: 11,
+      streetViewControl: false,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
+    //$scope.map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
+    var myLocation = new google.maps.Marker({
+      position: new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude),
+      map: $scope.map,
+      title: "My Location"
     });
+  });
   //});  
 })
 

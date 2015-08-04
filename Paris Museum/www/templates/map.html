@@ -12,12 +12,21 @@
 					<button class="mybutton">城市地图</button>
 				</div>
 				<div class="col nopadding mapcol">
-					<button class="mybutton">WIFI热点</button>
+					<button class="mybutton">巴黎地铁</button>
 				</div>
 			</div>
 			<div class="row nopadding  maprow">
 				<div class="col nopadding mapcol">
-					<button class="mybutton">公共厕所</button>
+					<div class="item item-toggle mytoggle">
+	     				WIFI热点
+	     				<label class="toggle toggle-calm">
+	       				<input type="checkbox" ng-model="wifi.checked">
+	       					<div class="track">
+	         					<div class="handle"></div>
+	       					</div>
+	     				</label>
+  					</div>
+					<!--<button class="mybutton">巴黎地铁</button>-->
 				</div>
 				<div class="col nopadding mapcol">
 					<button class="mybutton">景点地图</button>
@@ -25,7 +34,15 @@
 			</div>
 			<div class="row nopadding  maprow maprow-last">
 				<div class="col nopadding mapcol">
-					<button class="mybutton">巴黎地铁</button>
+					<div class="item item-toggle mytoggle">
+	     				公共厕所
+	     				<label class="toggle toggle-calm">
+	       				<input type="checkbox" ng-model="wc.checked">
+	       					<div class="track">
+	         					<div class="handle"></div>
+	       					</div>
+	     				</label>
+  					</div>
 				</div>
 				<div class="col nopadding mapcol">
 					<button class="mybutton">巴黎公交</button>
