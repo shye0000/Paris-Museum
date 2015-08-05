@@ -631,3 +631,15 @@ ion-content.introdescription{
 .mapcol .button:active{
 
 }
+.gmnoprint a, .gmnoprint span {
+    display:none;
+}
+.gmnoprint div {
+    background-color: rgba(255,255,255,0.7) !important;
+}
+#GMapsID div div a div img{
+    display:none;
+}
+a[title="Report errors in the road map or imagery to Google"], a[title="向 Google 报告道路地图或图像中的错误"]{
+    display: none !important;
+}

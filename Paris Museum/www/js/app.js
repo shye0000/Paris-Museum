@@ -275,7 +275,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'angular
         libraries: 'weather,geometry,visualization'
     });
 })*/
-.config(function($stateProvider, $urlRouterProvider, hammerDefaultOptsProvider) {
+.config(function($stateProvider, $urlRouterProvider, hammerDefaultOptsProvider, $ionicConfigProvider) {
   $stateProvider
 
     .state('app', {
@@ -404,4 +404,5 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'angular
   hammerDefaultOptsProvider.set({
     recognizers: [[Hammer.Pan, {time: 250}]]
   });
+  
 });
