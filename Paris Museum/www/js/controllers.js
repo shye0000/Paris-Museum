@@ -125,6 +125,7 @@ angular.module('starter.controllers', ['ngAudio'])
     // Setup the click event listeners: simply set the map center to current
     google.maps.event.addDomListener(controlUI, 'click', function() {
         map.setCenter(new google.maps.LatLng(GeoMarker.getPosition().G, GeoMarker.getPosition().K));
+        map.setZoom(11);
     });
 
   }
@@ -156,7 +157,7 @@ angular.module('starter.controllers', ['ngAudio'])
     google.maps.event.addDomListener(controlUI, 'click', function() {
       //map.setCenter(chicago)
       map.setCenter(new google.maps.LatLng(48.8534100, 2.3488000));
-      map.setZoom(12);
+      map.setZoom(11);
     });
 
   }
@@ -172,7 +173,7 @@ angular.module('starter.controllers', ['ngAudio'])
         $scope.wcmarkers.push(point);
       }
       $scope.map.setCenter(new google.maps.LatLng(48.8534100, 2.3488000));
-      $scope.map.setZoom(12);        
+      $scope.map.setZoom(11);        
     }
     if (newValue == false) {
       for (var i = 0; i < $scope.wcmarkers.length; i++) {
@@ -192,7 +193,7 @@ angular.module('starter.controllers', ['ngAudio'])
         $scope.wifimarkers.push(point);
       }
       $scope.map.setCenter(new google.maps.LatLng(48.8534100, 2.3488000));
-      $scope.map.setZoom(12);        
+      $scope.map.setZoom(11);        
     }
     if (newValue == false) {
       for (var i = 0; i < $scope.wifimarkers.length; i++) {
@@ -217,15 +218,208 @@ angular.module('starter.controllers', ['ngAudio'])
     $ionicSideMenuDelegate.canDragContent(false);
 })
 
-.controller('museumsCtrl', function($scope, $rootScope, museums) {
+.controller('museumsCtrl', function($scope, $rootScope, museums, $ionicPlatform, $state, $ionicActionSheet, $timeout, $window, $q) {
   $scope.$on('$ionicView.beforeEnter', function() {
     $rootScope.barColor = '#2482B4';
     $rootScope.fakebarColor = '#31C3F6';
     if (window.StatusBar) {
       StatusBar.backgroundColorByHexString("#31C3F6");
     }
+    $scope.updateMuseums (museums, $rootScope.museumjson.museums);
   });
-  $scope.museums = museums;
+
+  $scope.museumclick = function(id, link, foldername, downloaded) {
+    
+    if (downloaded) {
+      $state.go('app.museum', {museumId: id});
+    } else {
+      $scope.askingdownload('other', link, foldername, id);
+    }
+  };
+  $scope.askingdownload = function(text, link, foldername, id) {
+
+   // Show the action sheet
+   var question = '';
+   if (text == 'download') {
+     question = '请确认是否下载本扩展包';
+   }else{
+     question = '想看更多？想听讲解？点击“确认下载“安装扩展包';
+   }
+   var hideSheet = $ionicActionSheet.show({
+     buttons: [
+       { text: '确认下载' }
+     ],
+     titleText: question,
+     cancelText: '以后再说',
+     cancel: function() {
+       // add cancel code..
+     },
+     buttonClicked: function(index) {
+       download(link, foldername, id);
+       return true;
+     }
+   });
+   // For example's sake, hide the sheet after two seconds
+   $timeout(function() {
+     hideSheet();
+   }, 5000);
+
+  };
+
+  $scope.delete = function(id, foldername) {
+   var hideSheet = $ionicActionSheet.show({
+     /*buttons: [
+       { text: '确认下载' }
+     ],*/
+     destructiveText: '确认删除',
+     titleText: '请确认是否删除本扩展包',
+     cancelText: '以后再说',
+     cancel: function() {
+       // add cancel code..
+     },
+     destructiveButtonClicked: function() {
+        //alert('delete');
+        ondelete(id, foldername);
+        return true;
+     }
+   });
+   // For example's sake, hide the sheet after two seconds
+   $timeout(function() {
+     hideSheet();
+   }, 5000);
+
+  };
+  function ondelete(id, foldername) {
+    dodelete(id, foldername).then(function(result) {
+      
+      $rootScope.museumjson = result;
+      $scope.updateMuseums(museums, $rootScope.museumjson.museums);
+      alert('卸载完成');
+      //$window.location.reload(true);
+      //do whatever you want. This will be executed once city value is available
+    });
+  }
+  function dodelete (id, foldername) {
+    var deferred = $q.defer();
+
+    var mjson = $rootScope.museumjson;
+    findAndRemove(mjson.museums, 'id', id);
+    var mjsonstr = JSON.stringify(mjson.museums);
+    mjsonstr = mjsonstr.slice(0, -1);
+    mjsonstr = mjsonstr.substring(1);
+
+    window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSystem) {
+      fileSystem.root.getFile("parismuseum-media-extension/museum.json",{create: true, exclusive: false}, function(fileEntry){
+        fileEntry.createWriter(function(writer){
+          writer.write(mjsonstr);
+          window.resolveLocalFileSystemURL(cordova.file.externalRootDirectory + "parismuseum-media-extension/museum.json", function(fileEntry2){
+            fileEntry2.file(function(file2) {
+              var reader = new FileReader();
+              reader.onloadend = function(e) {
+                var res = JSON.parse('{"museums": [' + this.result + ']}');
+                $scope.$apply( function() {
+                  deferred.resolve(res);
+                });
+              }
+              reader.readAsText(file2);
+            }, function(){alert('shit');});
+          }, function(){alert('shit');});  
+        }, function(){alert('shit');});
+      }, function(){alert('安装出错,请重新安装');});
+    }, null);
+    return deferred.promise;
+  }
+  function findAndRemove(array, property, value) {
+    angular.forEach(array, function(v, k) {
+      if (v[property] == value) {
+        array.splice(k, 1);
+      }
+    });
+  }
+  function download (link, foldername, id) {
+    install("Download", foldername+".zip", id).then(function(result) {
+      $rootScope.museumjson = result;
+      $scope.updateMuseums(museums, $rootScope.museumjson.museums);
+     //$window.location.reload(true);
+     //do whatever you want. This will be executed once city value is available
+    });
+  };
+  function install (path,filename) {
+    var deferred = $q.defer();
+    $rootScope.installing = true;
+    window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSystem) {
+      fileSystem.root.getDirectory("parismuseum-media-extension", {create: true, exclusive: false},  function(dir){
+        zip.unzip('/storage/emulated/0' + '/' + path + '/' + filename, '/storage/emulated/0' + dir.fullPath, function(){
+          //update parismuseum-media-extension/museum.json and parismuseum-media-extension/object.json
+          //or create new parismuseum-media-extension/museum.json and parismuseum-media-extension/object.json
+          window.resolveLocalFileSystemURL(cordova.file.externalRootDirectory + "parismuseum-media-extension/" + filename.split('.')[0] +"/museum.json", function(fileEntry){
+            fileEntry.file(function(file) {
+              var reader = new FileReader();
+              reader.onloadend = function(e) {
+                var newText = this.result;
+                fileSystem.root.getFile("parismuseum-media-extension/museum.json",{create: true, exclusive: false}, function(fileEntry2){
+                  fileEntry2.createWriter(function(writer){
+                    if(writer.length == 0){
+                      writer.write(newText);
+                    }else{
+                      writer.seek(writer.length);
+                      writer.write(',' + newText);
+                    }
+                    alert('安装完成');
+                    window.resolveLocalFileSystemURL(cordova.file.externalRootDirectory + "parismuseum-media-extension/museum.json", function(fileEntry3){
+                    
+                      fileEntry3.file(function(file3) {
+                        
+                        var reader = new FileReader();
+                        reader.onloadend = function(e) {
+                          
+                          //$rootScope.museumjson = JSON.stringify(eval("(" + "museums: [" + this.result + "])"));
+                          //JSON.parse('[' + this.result + ']');
+                          //var museumjson = '{"museums": [{ "id": 1, "name": "卢浮宫 Musée du louvre", "img": "museum/louvre/image/louvre@2x.png", "imgobject": "museum/louvre/image/object-louvre@2x.png", "imginfo": "museum/louvre/image/info-louvre@2x.png", "imgintro": "museum/louvre/image/intro-louvre@2x.png", "introbackground":"museum/louvre/image/intro-background-louvre@2x.png", "audio":"museum/louvre/audio/minion_ring_ring.mp3", "description":"位于法国巴黎市中心的塞纳河北岸（右岸），原是法国的王宫，居住过50位法国国王和王后，现是卢浮宫博物馆，拥有的艺术收藏达40万件以上，包括雕塑、绘画、美术工艺及古代东方，古代埃及和古希腊罗马等6个门类。博物馆收藏目录上记载的艺术品数量已达400000件，分为许多的门类品种，从古代埃及、希腊、埃特鲁里亚、罗马的艺术品，到东方各国的艺术品，有从中世纪到现代的雕塑作品，还有数量惊人的王室珍玩以及绘画精品等等。迄今为止，卢浮宫已成为世界著名的艺术殿堂。" }]}';
+                          var museumjson = '{"museums": [' + this.result + ']}';
+                          //$rootScope.museumjson = JSON.parse(museumjson); 
+                          //alert($rootScope.museumjson.museums[0].name);
+                          var mjson = JSON.parse(museumjson);
+                          $scope.$apply( function() {
+                            deferred.resolve(mjson);
+                          });
+                        }
+                          
+                        reader.readAsText(file3);
+                      }, function(){alert('shit');});
+                    }, function(){alert('shit');});
+                  }, function(){alert('安装出错,请重新安装');});
+                }, function(){alert('安装出错,请重新安装');});
+                //alert("Text is: "+this.result);
+              }
+              reader.readAsText(file);
+            }, function(){alert('安装出错,请重新安装');});
+          }, function(){alert('安装出错,请重新安装');});
+
+        },null); 
+      }, null);
+    }, null);
+    return deferred.promise;
+  };
+  $scope.updateMuseums = function (allmuseums, installedmuseums){
+    if ($ionicPlatform.is('android')) {
+      for (var i = 0; i < allmuseums.length; i++) {
+        for (var j = 0; i < installedmuseums.length; i++) {
+          if (allmuseums[i].id == installedmuseums[j].id) {
+            allmuseums[i]. imgobject = installedmuseums[j].imgobject;
+            allmuseums[i]. imginfo = installedmuseums[j].imginfo;
+            allmuseums[i]. imgintro = installedmuseums[j].imgintro;
+            allmuseums[i]. introbackground = installedmuseums[j].introbackground;
+            allmuseums[i].downloaded = true;
+          }
+        }
+        allmuseums[i].downloaded = false;
+      }
+    }
+    
+    $scope.museums = allmuseums;
+  }
+  
 })
 
 .controller('ParisCtrl', function($scope, $rootScope) {
@@ -259,7 +453,7 @@ angular.module('starter.controllers', ['ngAudio'])
   }
 })
 
-.controller('MuseumCtrl', function($scope, $stateParams, $rootScope, museum) {
+.controller('MuseumCtrl', function($scope, $stateParams, $rootScope) {
   $scope.$on('$ionicView.beforeEnter', function() {
     $rootScope.barColor = '#2482B4';
     $rootScope.fakebarColor = '#31C3F6';
@@ -274,17 +468,24 @@ angular.module('starter.controllers', ['ngAudio'])
     x = w.innerWidth || e.clientWidth || g.clientWidth,
     y = w.innerHeight|| e.clientHeight|| g.clientHeight;
   var elems = document.getElementsByClassName("museumrow");
+  
   for(var i = 0; i < elems.length; i++) {
     elems[i].style.height= (y - 44)/3 + 'px';
   }
   elems = document.getElementsByClassName("museumservicebutton");
   for(var i = 0; i < elems.length; i++) {
     elems[i].style.marginTop= (y - 44)/6-18 + 'px';
-  }  
-  $scope.museum = museum;
+  }
+  for(var i = 0; i < $rootScope.museumjson.museums.length; i++) {
+    //alert("/storage/emulated/0" + $rootScope.mediadir + $rootScope.museumjson.museums[i].imgintro);
+    if ($rootScope.museumjson.museums[i].id == $stateParams.museumId) {
+      $scope.museum = $rootScope.museumjson.museums[i];
+      break;
+    }
+  }
 })
 
-.controller('ObjectsCtrl', function($scope, $stateParams, $rootScope, $cordovaStatusbar, objectsOfMuseum) {
+.controller('ObjectsCtrl', function($scope, $stateParams, $rootScope, $cordovaStatusbar) {
   $scope.$on('$ionicView.beforeEnter', function() {
     $rootScope.barColor = '#4A3852';
     $rootScope.fakebarColor = '#3A2D3E';
@@ -292,10 +493,16 @@ angular.module('starter.controllers', ['ngAudio'])
       StatusBar.backgroundColorByHexString("#3A2D3E");
     }
   });
-  $scope.objects = objectsOfMuseum;
+  $scope.objects = [];
+  for(var i = 0; i < $rootScope.objectjson.objects.length; i++) {
+    if ($rootScope.objectjson.objects[i].museumid == $stateParams.museumId) {
+      $scope.objects.push($rootScope.objectjson.objects[i]);
+    }
+  }
+  
 })
 
-.controller('IntroAudioCtrl',function($scope, $stateParams, $rootScope, $cordovaStatusbar, $ionicSideMenuDelegate, introobject, ngAudio, MediaSrv){
+.controller('IntroAudioCtrl',function($scope, $stateParams, $rootScope, $cordovaStatusbar, $ionicSideMenuDelegate, ngAudio, MediaSrv){
   $scope.$on('$ionicView.beforeEnter', function() {
     $rootScope.barColor = '#2482B4';
     $rootScope.fakebarColor = '#31C3F6';
@@ -333,14 +540,20 @@ angular.module('starter.controllers', ['ngAudio'])
   mediaTimer = null;
   var mymedia = null; 
   if ($stateParams.museumId) {
-    $scope.introobject = introobject;
+    for (var i = 0; i < $rootScope.museumjson.museums.length; i++) {
+        if ($stateParams.museumId == $rootScope.museumjson.museums[i].id) {
+          $scope.introobject = $rootScope.museumjson.museums[i];
+          break;
+        }
+    }
+    //$scope.introobject = introobject;
     $scope.name="展馆介绍";
     document.getElementById("locationbutton").style.display = "none";
     document.getElementById("timer").style.left = "80%";
   }
   else {
-    $scope.introobject = introobject;
-    $scope.name=$scope.introobject.name + ' ' + $scope.introobject.frenchname;
+    //$scope.introobject = introobject;
+    //$scope.name=$scope.introobject.name + ' ' + $scope.introobject.frenchname;
   }
   document.getElementById("currentTime").innerHTML = "00:00";
 

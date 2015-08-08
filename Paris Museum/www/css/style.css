@@ -291,7 +291,33 @@ fake-statusbar {
 	margin: 0;
 
 }
-
+.icondownload img{
+	height: 36px;
+	width: 36px!important;
+	position: absolute;
+	bottom: 2px;
+	right: 15px;
+	z-index: 5;
+}
+.icondelete img{
+	height: 36px;
+	width: 36px!important;
+	position: absolute;
+	bottom: 2px;
+	right: 15px;
+	z-index: 5;
+	-moz-opacity: 0.50;
+	-khtml-opacity: 0.50;
+	opacity: 0.50;
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha"(Opacity=50);
+	filter: progid:DXImageTransform.Microsoft.Alpha(opacity=50);
+	filter:alpha(opacity=50);
+}
+.mask{
+	width: 100%;
+	height: 100%;
+	background-color: rgba(100,100,100,0.5);
+}
 
 
 

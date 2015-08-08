@@ -1255,7 +1255,7 @@ function($rootScope, $state, $location, $window, $timeout, $ionicViewSwitcher, $
      * This both removes the view element from the DOM, and destroy it's scope.
      */
     clearCache: function(stateIds) {
-      $timeout(function() {
+      return $timeout(function() {
         $ionicNavViewDelegate._instances.forEach(function(instance) {
           instance.clearCache(stateIds);
         });
