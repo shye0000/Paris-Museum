@@ -50,6 +50,10 @@ angular.module('starter.controllers', ['ngAudio'])
     }
 
   });
+  $scope.$on('$ionicView.beforeLeave', function() {
+    if (GeoMarker) GeoMarker = null;
+
+  });
   $scope.$on('$ionicView.afterEnter', function(){
     $scope.wifimarkers = [];
     $scope.wcmarkers = [];
@@ -225,13 +229,13 @@ angular.module('starter.controllers', ['ngAudio'])
     if (window.StatusBar) {
       StatusBar.backgroundColorByHexString("#31C3F6");
     }
-    $scope.updateMuseums (museums, $rootScope.museumjson.museums);
+    
   });
 
   $scope.museumclick = function(id, link, foldername, downloaded) {
     
     if (downloaded) {
-      $state.go('app.museum', {museumId: id});
+      $state.go('app.museum', {museumId: id, folderName: foldername});
     } else {
       $scope.askingdownload('other', link, foldername, id);
     }
@@ -295,7 +299,6 @@ angular.module('starter.controllers', ['ngAudio'])
       $rootScope.museumjson = result;
       $scope.updateMuseums(museums, $rootScope.museumjson.museums);
       alert('卸载完成');
-      //$window.location.reload(true);
       //do whatever you want. This will be executed once city value is available
     });
   }
@@ -309,6 +312,11 @@ angular.module('starter.controllers', ['ngAudio'])
     mjsonstr = mjsonstr.substring(1);
 
     window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSystem) {
+      fileSystem.root.getDirectory("parismuseum-media-extension/" + foldername, {create : true, exclusive : false}, function(entry) {
+        entry.removeRecursively(function() {
+          console.log("Remove Recursively Succeeded");
+        }, function(){alert('shit');});  
+      }, function(){alert('shit');});
       fileSystem.root.getFile("parismuseum-media-extension/museum.json",{create: true, exclusive: false}, function(fileEntry){
         fileEntry.createWriter(function(writer){
           writer.write(mjsonstr);
@@ -340,6 +348,7 @@ angular.module('starter.controllers', ['ngAudio'])
     install("Download", foldername+".zip", id).then(function(result) {
       $rootScope.museumjson = result;
       $scope.updateMuseums(museums, $rootScope.museumjson.museums);
+      alert('安装完成');
      //$window.location.reload(true);
      //do whatever you want. This will be executed once city value is available
     });
@@ -365,7 +374,7 @@ angular.module('starter.controllers', ['ngAudio'])
                       writer.seek(writer.length);
                       writer.write(',' + newText);
                     }
-                    alert('安装完成');
+                    
                     window.resolveLocalFileSystemURL(cordova.file.externalRootDirectory + "parismuseum-media-extension/museum.json", function(fileEntry3){
                     
                       fileEntry3.file(function(file3) {
@@ -419,6 +428,7 @@ angular.module('starter.controllers', ['ngAudio'])
     
     $scope.museums = allmuseums;
   }
+  $scope.updateMuseums (museums, $rootScope.museumjson.museums);
   
 })
 
@@ -453,7 +463,7 @@ angular.module('starter.controllers', ['ngAudio'])
   }
 })
 
-.controller('MuseumCtrl', function($scope, $stateParams, $rootScope) {
+.controller('MuseumCtrl', function($scope, $stateParams, $rootScope, $q) {
   $scope.$on('$ionicView.beforeEnter', function() {
     $rootScope.barColor = '#2482B4';
     $rootScope.fakebarColor = '#31C3F6';
@@ -480,9 +490,33 @@ angular.module('starter.controllers', ['ngAudio'])
     //alert("/storage/emulated/0" + $rootScope.mediadir + $rootScope.museumjson.museums[i].imgintro);
     if ($rootScope.museumjson.museums[i].id == $stateParams.museumId) {
       $scope.museum = $rootScope.museumjson.museums[i];
+      $scope.museum.foldername = $stateParams.folderName;
       break;
     }
   }
+  getMuseumObjects($scope.museum.foldername).then(function(result) {
+    $rootScope.objectjson = result;
+  });
+  function getMuseumObjects(foldername) {
+    var deferred = $q.defer();
+    window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSystem){
+      fileSystem.root.getFile("parismuseum-media-extension/"+ foldername +"/object.json",{create: false, exclusive: false}, function(fileEntry){
+        fileEntry.file(function(file) {
+          var reader = new FileReader();
+          reader.onloadend = function(e) {
+            var objectjson = '{"objects": [' + this.result + ']}';
+            var ojson = JSON.parse(objectjson);
+            $scope.$apply( function() {
+              deferred.resolve(ojson);
+            });
+          }
+          reader.readAsText(file);
+        }, null);
+      }, null);
+    }, null);
+    return deferred.promise;
+  }
+  
 })
 
 .controller('ObjectsCtrl', function($scope, $stateParams, $rootScope, $cordovaStatusbar) {
@@ -493,12 +527,12 @@ angular.module('starter.controllers', ['ngAudio'])
       StatusBar.backgroundColorByHexString("#3A2D3E");
     }
   });
-  $scope.objects = [];
-  for(var i = 0; i < $rootScope.objectjson.objects.length; i++) {
+  $scope.objects = $rootScope.objectjson.objects;
+  /*for(var i = 0; i < $rootScope.objectjson.objects.length; i++) {
     if ($rootScope.objectjson.objects[i].museumid == $stateParams.museumId) {
       $scope.objects.push($rootScope.objectjson.objects[i]);
     }
-  }
+  }*/
   
 })
 
@@ -509,8 +543,29 @@ angular.module('starter.controllers', ['ngAudio'])
     if (window.StatusBar) {
       StatusBar.backgroundColorByHexString("#31C3F6");
     }
+    /*MediaSrv.loadMedia($scope.introobject.audio).then(function(media) {
+    mymedia = media;
+    var counter = 0;
+    var timerDur = setInterval(function() {
+      counter = counter + 100;
+      if(counter > 2000) {clearInterval(timerDur);}
+      var dur = mymedia.getDuration();
+      if (dur > 0) {
+        clearInterval(timerDur);
+        var minutes = Math.floor(dur / 60);
+        minutes = minutes > 9 ? minutes: "0" + minutes;
+        var seconds = Math.floor(dur - minutes * 60);
+        seconds = seconds > 9 ? seconds: "0" + seconds;
+        document.getElementById("duration").innerHTML = "/" + minutes + ":" + seconds;
+        $scope.durationstring = minutes + ":" + seconds;
+        $scope.duration = dur;
+      }
+    }, 100);
+    
+  });*/
   });
   $scope.$on('$ionicView.afterEnter', function() {
+
     $scope.playAudio();
   });
   $scope.$on('$ionicView.beforeLeave', function() {
@@ -552,34 +607,47 @@ angular.module('starter.controllers', ['ngAudio'])
     document.getElementById("timer").style.left = "80%";
   }
   else {
+    for (var i = 0; i < $rootScope.objectjson.objects.length; i++) {
+        if ($stateParams.objectId == $rootScope.objectjson.objects[i].id) {
+          $scope.introobject = $rootScope.objectjson.objects[i];
+          break;
+        }
+    }
     //$scope.introobject = introobject;
-    //$scope.name=$scope.introobject.name + ' ' + $scope.introobject.frenchname;
+    $scope.name=$scope.introobject.name + ' ' + $scope.introobject.frenchname;
   }
   document.getElementById("currentTime").innerHTML = "00:00";
+  //alert($scope.introobject.audio);
 
-  MediaSrv.loadMedia($scope.introobject.audio).then(function(media) {
-    mymedia = media;
-    
-  });
-  var counter = 0;
-  var timerDur = setInterval(function() {
-    counter = counter + 100;
-    if(counter > 2000) {clearInterval(timerDur);}
-    var dur = mymedia.getDuration();
-    if (dur > 0) {
-      clearInterval(timerDur);
-      var minutes = Math.floor(dur / 60);
-      minutes = minutes > 9 ? minutes: "0" + minutes;
-      var seconds = Math.floor(dur - minutes * 60);
-      seconds = seconds > 9 ? seconds: "0" + seconds;
-      document.getElementById("duration").innerHTML = "/" + minutes + ":" + seconds;
-      $scope.durationstring = minutes + ":" + seconds;
-      $scope.duration = dur;
-    }
-  }, 100);
+  
   $scope.playAudio = function() {
-    if(mymedia) {
+    if(mymedia === null){ 
+      MediaSrv.loadMedia($scope.introobject.audio).then(function(media) {
+        mymedia = media;
+        var counter = 0;
+        var timerDur = setInterval(function() {
+          counter = counter + 100;
+          if(counter > 2000) {clearInterval(timerDur);}
+          var dur = mymedia.getDuration();
+          if (dur > 0) {
+            clearInterval(timerDur);
+            var minutes = Math.floor(dur / 60);
+            minutes = minutes > 9 ? minutes: "0" + minutes;
+            var seconds = Math.floor(dur - minutes * 60);
+            seconds = seconds > 9 ? seconds: "0" + seconds;
+            document.getElementById("duration").innerHTML = "/" + minutes + ":" + seconds;
+            $scope.durationstring = minutes + ":" + seconds;
+            $scope.duration = dur;
+          }
+        }, 100);
+        $scope.playAudio();
+
+      });
+    }
+    else {
       mymedia.play();
+
+      //alert('playstart');
       $scope.played = true;
       mediaTimer = setInterval(function () {
     // get media position
@@ -597,8 +665,10 @@ angular.module('starter.controllers', ['ngAudio'])
                 document.getElementById("currenttimeline").style.width = (position/$scope.duration)*100+'%';
               }
               if ((minutes + ":" + seconds) == $scope.durationstring) {
-                clearInterval(mediaTimer);
+                
                 mymedia.pause();
+                clearInterval(mediaTimer);
+                //mediaTimer = null;
                 mymedia.seekTo(0);
                 $scope.played = false;
                 document.getElementById("currentTime").innerHTML = "00:00";
@@ -633,13 +703,16 @@ angular.module('starter.controllers', ['ngAudio'])
       mymedia.getCurrentPosition(
         // success callback
         function (position) {
+
             if (position > -1) {
               var newPosition = position*1000+5000;
+              //alert(newPosition);
               if (newPosition >= $scope.duration*1000) newPosition = ($scope.duration-2)*1000;
+              mymedia.seekTo(newPosition);
               var percentage = newPosition/($scope.duration*1000);
               document.getElementById("currentpoint").style.left = percentage*100 + "%";
               document.getElementById("currenttimeline").style.width = percentage*100 + "%";
-              mymedia.seekTo(newPosition);
+              
               var minutes = Math.floor((newPosition/1000) / 60);
               minutes = minutes > 9 ? minutes: "0" + minutes;
               var seconds = Math.floor((newPosition/1000) - minutes * 60);
@@ -649,7 +722,7 @@ angular.module('starter.controllers', ['ngAudio'])
         },
         // error callback
         function (e) {
-            console.log("Error getting pos=" + e);
+            alert('dfdfdf');
         }
       );
     }
@@ -661,11 +734,13 @@ angular.module('starter.controllers', ['ngAudio'])
         function (position) {
           if (position > -1) {
             var newPosition = position*1000-5000;
+            //alert(newPosition);
             if (newPosition <= 0) newPosition = 0;
+            mymedia.seekTo(newPosition);
             var percentage = newPosition/($scope.duration*1000);
             document.getElementById("currentpoint").style.left = percentage*100 + "%";
             document.getElementById("currenttimeline").style.width = percentage*100 + "%";
-            mymedia.seekTo(newPosition);
+
             var minutes = Math.floor((newPosition/1000) / 60);
             minutes = minutes > 9 ? minutes: "0" + minutes;
             var seconds = Math.floor((newPosition/1000) - minutes * 60);
@@ -676,7 +751,7 @@ angular.module('starter.controllers', ['ngAudio'])
         },
         // error callback
         function (e) {
-            console.log("Error getting pos=" + e);
+            alert('ddddd');
         }
       );
     }

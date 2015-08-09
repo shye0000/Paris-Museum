@@ -422,16 +422,13 @@ ion-content.objectlistwithsearchbar{
 	padding-top: 5px;
 }
 
-
-
-
-
 .introplayerblock{
 	position: relative;
 	background-color: #5E4C66;
 	!text-overflow: hidden;
 	border-width: 0;
-	background-size: cover;
+	background-size: 100% auto;
+	background-position: left top;
 	background-repeat: no-repeat;
 	padding: 0;
 	width: 100%;

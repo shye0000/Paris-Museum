@@ -76,7 +76,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'angular
 
     function onDeviceReady() {
         $rootScope.museumjson = {"museums":[]};
-        $rootScope.objectjson = {"objects":[]};
         window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
     }
     function gotFS(fileSystem) {
@@ -90,6 +89,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'angular
             //var museumjson = '{"museums": [{ "id": 1, "name": "卢浮宫 Musée du louvre", "img": "museum/louvre/image/louvre@2x.png", "imgobject": "museum/louvre/image/object-louvre@2x.png", "imginfo": "museum/louvre/image/info-louvre@2x.png", "imgintro": "museum/louvre/image/intro-louvre@2x.png", "introbackground":"museum/louvre/image/intro-background-louvre@2x.png", "audio":"museum/louvre/audio/minion_ring_ring.mp3", "description":"位于法国巴黎市中心的塞纳河北岸（右岸），原是法国的王宫，居住过50位法国国王和王后，现是卢浮宫博物馆，拥有的艺术收藏达40万件以上，包括雕塑、绘画、美术工艺及古代东方，古代埃及和古希腊罗马等6个门类。博物馆收藏目录上记载的艺术品数量已达400000件，分为许多的门类品种，从古代埃及、希腊、埃特鲁里亚、罗马的艺术品，到东方各国的艺术品，有从中世纪到现代的雕塑作品，还有数量惊人的王室珍玩以及绘画精品等等。迄今为止，卢浮宫已成为世界著名的艺术殿堂。" }]}';
             var museumjson = '{"museums": [' + this.result + ']}';
             $rootScope.museumjson = JSON.parse(museumjson);
+            $cordovaSplashscreen.hide()
             //alert($rootScope.museumjson.museums[0].name);
           }
           reader.readAsText(file);
@@ -115,7 +115,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'angular
     }
   });
 })
-.service('ObjectsService', function($q, $rootScope) {
+/*.service('ObjectsService', function($q, $rootScope) {
   
   return {
     //$rootScope.objectjson,
@@ -168,7 +168,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'angular
     }
 
   }
-})
+})*/
 .service('MuseumsService', function($q, $rootScope) {
   return {
     //$rootScope.museumjson,
@@ -226,7 +226,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'angular
   };
 })
 
-.factory('MediaSrv', function($q, $ionicPlatform, $window) {
+.factory('MediaSrv', function($q, $ionicPlatform, $window, $rootScope) {
   var service = {
     loadMedia: loadMedia,
     getStatusMessage: getStatusMessage,
@@ -254,8 +254,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'angular
       };
 
       if ($ionicPlatform.is('android')) {
-        src = '/android_asset/www/' + src;
-        //alert(src);
+        src = 'file:///storage/emulated/0'+$rootScope.mediadir+src;
+               //'/android_asset/www/audio/objects/minion_ring_ring.mp3';
       }
       defer.resolve(new $window.Media(src, mediaSuccess, mediaError, mediaStatus));
     });
@@ -401,7 +401,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'angular
       }
     })
     .state('app.museum', {
-      url: '/museums/:museumId',
+      url: '/museums/:museumId/:folderName',
       views: {
         'menuContent': {
           templateUrl: 'templates/museum.html',
