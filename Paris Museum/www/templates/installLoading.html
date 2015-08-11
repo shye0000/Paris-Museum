@@ -1,0 +1,9 @@
+
+      <div class="installdiv" id="installdiv" ng-show="installing"> 
+	    <ion-spinner ng-show="installbusy" class="installelem"></ion-spinner>
+	    <div class="install-status installelem" id="installstatus">下载扩展包...</div>
+	    <div class="installelem" ng-show="downloading">
+	      <span id="downloadbar" class="downloadbar"></span> <span id="percentage">0%</span>
+	    </div>
+	    <button class="button button-outline button-positive" ng-click="downloadok()" ng-show="!installbusy"> 确定 </button>
+	  </div>

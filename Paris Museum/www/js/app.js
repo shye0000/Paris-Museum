@@ -80,6 +80,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'angular
     }
     function gotFS(fileSystem) {
       $rootScope.mediadir = "/parismuseum-media-extension/";
+      $rootScope.root = fileSystem.root.toURL().substring(7).slice(0, -1);
       fileSystem.root.getFile("parismuseum-media-extension/museum.json",{create: false, exclusive: false}, function(fileEntry){
         fileEntry.file(function(file) {
           var reader = new FileReader();
@@ -173,7 +174,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'angular
   return {
     //$rootScope.museumjson,
     museums: [
-      { downloadlink: '', downloaded: false, name: '卢浮宫 Musée du louvre', foldername: 'louvre', img: 'img/big/louvre@2x.png', id: 1},
+      { downloadlink: 'http://shye0000.webfactional.com/static/parismuseum_museum_extension/louvre.zip', downloaded: false, name: '卢浮宫 Musée du louvre', foldername: 'louvre', img: 'img/big/louvre@2x.png', id: 1},
       { downloadlink: '', downloaded: false, name: '奥赛 Musée d\'orsay', foldername: 'orsay', img: 'img/big/orsay@2x.png', id: 2},
       { downloadlink: '', downloaded: false, name: '蓬皮杜 Centre pompidou', foldername: 'pompidou', img: 'img/big/pompidou@2x.png', id: 3}
     ],
@@ -198,9 +199,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'angular
       var url = attrs.backImg;
       element.css(
         {
-          'background-image': 'url("/storage/emulated/0' + $rootScope.mediadir + url + '")'
+          'background-image': 'url("' + $rootScope.root + $rootScope.mediadir + url + '")'
         });
     };
+    
 })
 .directive('myRepeatDirective', function($rootScope) {
   return function(scope, element, attrs) {
@@ -234,32 +236,32 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'angular
   };
 
   function loadMedia(src, onError, onStatus, onStop) {
-    var defer = $q.defer();
-    $ionicPlatform.ready(function() {
-      var mediaSuccess = function() {
-        if (onStop) {
-          onStop();
-        }
-      };
-      var mediaError = function(err) {
-        _logError(src, err);
-        if (onError) {
-          onError(err);
-        }
-      };
-      var mediaStatus = function(status) {
-        if (onStatus) {
-          onStatus(status);
-        }
-      };
+      var defer = $q.defer();
+      $ionicPlatform.ready(function() {
+        var mediaSuccess = function() {
+          if (onStop) {
+            onStop();
+          }
+        };
+        var mediaError = function(err) {
+          _logError(src, err);
+          if (onError) {
+            onError(err);
+          }
+        };
+        var mediaStatus = function(status) {
+          if (onStatus) {
+            onStatus(status);
+          }
+        };
 
-      if ($ionicPlatform.is('android')) {
-        src = 'file:///storage/emulated/0'+$rootScope.mediadir+src;
-               //'/android_asset/www/audio/objects/minion_ring_ring.mp3';
-      }
-      defer.resolve(new $window.Media(src, mediaSuccess, mediaError, mediaStatus));
-    });
-    return defer.promise;
+        if ($ionicPlatform.is('android')) {
+          src = 'file://' + $rootScope.root + $rootScope.mediadir+src;
+                 //'/android_asset/www/audio/objects/minion_ring_ring.mp3';
+        }
+        defer.resolve(new $window.Media(src, mediaSuccess, mediaError, mediaStatus));
+      });
+      return defer.promise;
   }
 
   function _logError(src, err) {

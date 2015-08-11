@@ -666,3 +666,51 @@ ion-content.introdescription{
 a[title="Report errors in the road map or imagery to Google"], a[title="向 Google 报告道路地图或图像中的错误"]{
     display: none !important;
 }
+
+
+
+
+
+
+
+
+.installdiv{
+	!position:absolute;
+	!background-color: white;
+	/*top: 40%;
+	margin-top: -60px;
+	left: 50%;*/
+	!border-radius: 10px;
+	!border-color: #31C3F6;
+	!border-width: 3px;
+	!border-style: solid;
+	height: 120px;
+	!z-index: 200;
+	padding: 10px;
+	text-align: center;
+}
+
+.installspinner{
+	height: 36px;
+	width: 36px!important;
+	position: absolute;
+	bottom: 2px;
+	right: 15px;
+	z-index: 5;
+}
+.installelem{
+	margin-bottom: 10px;
+}
+.downloadbar{
+	display:inline-block;
+	border-color: #31C3F6;
+	border-width: 1px;
+	border-style: solid;
+	height: 16px;
+	width: 200px;
+}
+#percentage{
+	display:inline-block;
+	height: 16px;
+	width: 40px;
+}
