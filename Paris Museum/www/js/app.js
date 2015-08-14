@@ -4,47 +4,11 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-window.Media = function(src, mediaSuccess, mediaError, mediaStatus){
-  // src: A URI containing the audio content. (DOMString)
-  // mediaSuccess: (Optional) The callback that executes after a Media object has completed the current play, record, or stop action. (Function)
-  // mediaError: (Optional) The callback that executes if an error occurs. (Function)
-  // mediaStatus: (Optional) The callback that executes to indicate status changes. (Function)
 
-  if (typeof Audio !== "function" && typeof Audio !== "object") {
-    console.warn("HTML5 Audio is not supported in this browser");
-  }
-  var sound = new Audio();
-  sound.src = src;
-  sound.addEventListener("ended", mediaSuccess, false);
-  sound.load();
-
-  return {
-    // Returns the current position within an audio file (in seconds).
-    getCurrentPosition: function(mediaSuccess, mediaError){ mediaSuccess(sound.currentTime); },
-    // Returns the duration of an audio file (in seconds) or -1.
-    getDuration: function(){ return isNaN(sound.duration) ? -1 : sound.duration; },
-    // Start or resume playing an audio file.
-    play: function(){ sound.play(); },
-    // Pause playback of an audio file.
-    pause: function(){ sound.pause(); },
-    // Releases the underlying operating system's audio resources. Should be called on a ressource when it's no longer needed !
-    release: function(){},
-    // Moves the position within the audio file.
-    seekTo: function(milliseconds){}, // TODO
-    // Set the volume for audio playback (between 0.0 and 1.0).
-    setVolume: function(volume){ sound.volume = volume; },
-    // Start recording an audio file.
-    startRecord: function(){},
-    // Stop recording an audio file.
-    stopRecord: function(){},
-    // Stop playing an audio file.
-    stop: function(){ sound.pause(); if(mediaSuccess){mediaSuccess();} } // TODO
-  };
-};
 
 angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'angular-gestures', 'ngTouch'])
 
-.run(function($ionicPlatform, $state, $rootScope, $cordovaFile, $window) {
+.run(function($ionicPlatform, $state, $rootScope, $cordovaFile, $window, $q) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -76,21 +40,28 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'angular
 
     function onDeviceReady() {
         $rootScope.museumjson = {"museums":[]};
+        $rootScope.mediadir = "/parismuseum-media-extension/";
+        /*window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail).then(function(res) {
+          var museumjson = '{"museums": [' + res + ']}';
+          $rootScope.museumjson = JSON.parse(museumjson);
+          $cordovaSplashscreen.hide();
+        });*/
         window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
+        
     }
     function gotFS(fileSystem) {
-      $rootScope.mediadir = "/parismuseum-media-extension/";
+      var defer = $q.defer();
+      
       $rootScope.root = fileSystem.root.toURL().substring(7).slice(0, -1);
       fileSystem.root.getFile("parismuseum-media-extension/museum.json",{create: false, exclusive: false}, function(fileEntry){
         fileEntry.file(function(file) {
           var reader = new FileReader();
           reader.onloadend = function(e) {
-            //$rootScope.museumjson = JSON.stringify(eval("(" + "museums: [" + this.result + "])"));
-            //JSON.parse('[' + this.result + ']');
-            //var museumjson = '{"museums": [{ "id": 1, "name": "卢浮宫 Musée du louvre", "img": "museum/louvre/image/louvre@2x.png", "imgobject": "museum/louvre/image/object-louvre@2x.png", "imginfo": "museum/louvre/image/info-louvre@2x.png", "imgintro": "museum/louvre/image/intro-louvre@2x.png", "introbackground":"museum/louvre/image/intro-background-louvre@2x.png", "audio":"museum/louvre/audio/minion_ring_ring.mp3", "description":"位于法国巴黎市中心的塞纳河北岸（右岸），原是法国的王宫，居住过50位法国国王和王后，现是卢浮宫博物馆，拥有的艺术收藏达40万件以上，包括雕塑、绘画、美术工艺及古代东方，古代埃及和古希腊罗马等6个门类。博物馆收藏目录上记载的艺术品数量已达400000件，分为许多的门类品种，从古代埃及、希腊、埃特鲁里亚、罗马的艺术品，到东方各国的艺术品，有从中世纪到现代的雕塑作品，还有数量惊人的王室珍玩以及绘画精品等等。迄今为止，卢浮宫已成为世界著名的艺术殿堂。" }]}';
-            var museumjson = '{"museums": [' + this.result + ']}';
-            $rootScope.museumjson = JSON.parse(museumjson);
-            $cordovaSplashscreen.hide()
+            var museumsjson = '{"museums": [' + this.result + ']}';
+            $rootScope.museumjson = JSON.parse(museumsjson);
+            $cordovaSplashscreen.hide();
+            //defer.resolve(result);
+            
             //alert($rootScope.museumjson.museums[0].name);
           }
           reader.readAsText(file);
@@ -108,6 +79,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'angular
           reader.readAsText(file);
         }, fail);
       }, fail);*/
+      //return defer.promise;
     }
     function fail(error) {
       //alert('fail: '+error.code);
@@ -172,26 +144,21 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'angular
 })*/
 .service('MuseumsService', function($q, $rootScope) {
   return {
-    //$rootScope.museumjson,
     museums: [
       { downloadlink: 'http://shye0000.webfactional.com/static/parismuseum_museum_extension/louvre.zip', downloaded: false, name: '卢浮宫 Musée du louvre', foldername: 'louvre', img: 'img/big/louvre@2x.png', id: 1},
       { downloadlink: '', downloaded: false, name: '奥赛 Musée d\'orsay', foldername: 'orsay', img: 'img/big/orsay@2x.png', id: 2},
       { downloadlink: '', downloaded: false, name: '蓬皮杜 Centre pompidou', foldername: 'pompidou', img: 'img/big/pompidou@2x.png', id: 3}
     ],
     getMuseums: function() {
-      //alert($rootScope.museumjson.museums[0].name);
       return this.museums
-    },
-    
+    },   
     getMuseum: function(museumId) {
       var dfd = $q.defer();
       this.museums.forEach(function(museum) {
         if (museum.id == museumId) dfd.resolve(museum);
       })
-
       return dfd.promise;
     }
-
   }
 })
 .directive('backImg', function($rootScope){
@@ -258,8 +225,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'angular
         if ($ionicPlatform.is('android')) {
           src = 'file://' + $rootScope.root + $rootScope.mediadir+src;
                  //'/android_asset/www/audio/objects/minion_ring_ring.mp3';
+                 //'file://' + $rootScope.root + $rootScope.mediadir+'Evergreen Tree-Cliff Richard.mp3';
         }
-        defer.resolve(new $window.Media(src, mediaSuccess, mediaError, mediaStatus));
+        var media = new $window.Media(src, mediaSuccess, mediaError, mediaStatus);
+        media.status = mediaStatus;
+        defer.resolve(media);
       });
       return defer.promise;
   }
@@ -325,15 +295,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'angular
 
   }
 })
-
-/*.config(function(uiGmapGoogleMapApiProvider) {
-    uiGmapGoogleMapApiProvider.configure({
-        //key: 'AIzaSyA-EnzVppOSkwmYa7tFoM7VhfITXd71Pow',
-        key: 'AIzaSyAdWf9dbIUnwXPOt_32K_K1B7uWmpOwddE',        
-        v: '3.17',
-        libraries: 'weather,geometry,visualization'
-    });
-})*/
 .config(function($stateProvider, $urlRouterProvider, hammerDefaultOptsProvider, $ionicConfigProvider) {
   $stateProvider
 

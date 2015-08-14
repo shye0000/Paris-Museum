@@ -1,7 +1,7 @@
 
       <div class="installdiv" id="installdiv" ng-show="installing"> 
 	    <ion-spinner ng-show="installbusy" class="installelem"></ion-spinner>
-	    <div class="install-status installelem" id="installstatus">下载扩展包...</div>
+	    <div class="install-status installelem" id="installstatus" ng-bind="installstatus"></div>
 	    <div class="installelem" ng-show="downloading">
 	      <span id="downloadbar" class="downloadbar"></span> <span id="percentage">0%</span>
 	    </div>
