@@ -7,15 +7,15 @@
 			  	  	<img src="{{root}}{{mediadir}}{{museum.imgintro}}" class="museumserviceimg">
 				</div>
 			</div>
-			<div class="col nopadding nomargin">
-			   	<a href="#/app/museum/intro/{{museum.id}}"><div class="museumservicebutton">展馆介绍</div></a>
+			<div class="col nopadding nomargin mycol ripple" ripple="$event" ng-click="click(museum.id, 'intromuseum')">
+			   	<div class="museumservicebutton">展馆介绍</div>
 			</div>
 		</div>
 		<div class="row nopadding fow-fix museumrow nomargin">
-			<div class="col nopadding nomargin">
-			  	<a href="#/app/objects/{{museum.id}}"><div class="museumservicebutton">展品介绍</div></a>
+			<div class="col nopadding nomargin mycol ripple" ripple="$event" ng-click="click(museum.id, 'objects')">
+			  		<div class="museumservicebutton">展品介绍</div>
 			</div>
-			<div class="col nopadding noborder nomargin">
+			<div class="col nopadding noborder nomargin ">
 			  	<div class="item item-image noborder nomargin">
 			  	  	<img src="{{root}}{{mediadir}}{{museum.imgobject}}" class="museumserviceimg">
 				</div>
@@ -27,8 +27,8 @@
 			  	  	<img src="{{root}}{{mediadir}}{{museum.imginfo}}" class="museumserviceimg">
 				</div>
 			</div>
-			<div class="col nopadding nomargin">
-			  	<div class="museumservicebutton">实用信息</div>
+			<div class="col nopadding nomargin mycol ripple" ripple="$event">
+			  	<div class="museumservicebutton " >实用信息</div>
 			</div>
 		</div>
 	</div>	

@@ -1,5 +1,5 @@
 starterControllers
-.controller('museumsCtrl', function($scope, $rootScope, museums, $ionicPlatform, $state, $ionicActionSheet, $timeout, $window, $q, $ionicBackdrop, $ionicLoading) {
+.controller('museumsCtrl', function($compile, $scope, $rootScope, museums, $ionicPlatform, $state, $ionicActionSheet, $timeout, $window, $q, $ionicBackdrop, $ionicLoading) {
   $scope.$on('$ionicView.beforeEnter', function() {
     $rootScope.barColor = '#2482B4';
     $rootScope.fakebarColor = '#31C3F6';
@@ -25,14 +25,22 @@ starterControllers
       scope: $scope
     });
   }
-  $scope.museumclick = function(id, link, foldername, downloaded) {
-    if (link != ""){
-      if (downloaded) {
-        $state.go('app.museum', {museumId: id, folderName: foldername});
-      } else {
-        $scope.askingdownload('other', link, foldername, id);
+  $scope.museumclick = function(id, link, foldername, downloaded, e) {
+    /*var xPos = e.pageX - angular.element(e.target).prop('offsetLeft'),
+        yPos = e.pageY - angular.element(e.target).prop('offsetTop') - 44,
+        //ripplediv = $compile("<div class='ripple-effect' style='height:" + angular.element(e.target).prop('clientHeight')/2 + "px;width:" + angular.element(e.target).prop('clientHeight')/2 + "px;top:" + (yPos - (angular.element(e.target).prop('clientHeight')/4)) + "px;left:" + (xPos - (angular.element(e.target).prop('clientHeight')/4)) + "px;'></div>")($scope);
+        ripplediv = $compile("<div class='ripple-effect' style='height:" + angular.element(e.target).prop('clientHeight')/3 + "px;width:" + angular.element(e.target).prop('clientHeight')/3 + "px;top:" + (yPos - (angular.element(e.target).prop('clientHeight')/6)) + "px;left:" + (xPos - (angular.element(e.target).prop('clientHeight')/6)) + "px;'></div>")($scope);
+    angular.element(e.target).append(ripplediv);*/
+    setTimeout(function(){
+      //ripplediv.remove();*/
+      if (link != ""){
+        if (downloaded) {
+          $state.go('app.museum', {museumId: id, folderName: foldername});
+        } else {
+          $scope.askingdownload('other', link, foldername, id);
+        }
       }
-    }
+    }, 1000);
     
   };
   $scope.askingdownload = function(text, link, foldername, id) {
@@ -117,28 +125,34 @@ starterControllers
     mjsonstr = mjsonstr.slice(0, -1);
     mjsonstr = mjsonstr.substring(1);
 
-    window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSystem) {
-      fileSystem.root.getDirectory("parismuseum-media-extension/" + foldername, {create : true, exclusive : false}, function(entry) {
-        entry.removeRecursively(function() {
-          console.log("Remove Recursively Succeeded");
-        }, uninstallError);  
-      }, uninstallError);
-      fileSystem.root.getFile("parismuseum-media-extension/museum.json",{create: true, exclusive: false}, function(fileEntry){
-        fileEntry.createWriter(function(writer){
-          writer.write(mjsonstr);
-          window.resolveLocalFileSystemURL(cordova.file.externalRootDirectory + "parismuseum-media-extension/museum.json", function(fileEntry2){
-            fileEntry2.file(function(file2) {
-              var reader = new FileReader();
-              reader.onloadend = function(e) {
-                var res = JSON.parse('{"museums": [' + this.result + ']}');
-                defer.resolve(res);
-              }
-              reader.readAsText(file2);
-            }, uninstallError);
-          }, uninstallError);  
-        }, uninstallError);
-      }, uninstallError);
-    }, uninstallError);
+    window.resolveLocalFileSystemURL(cordova.file.applicationStorageDirectory, function(dir){ 
+      dir.getDirectory("parismuseum-media-extension", {create: true, exclusive: false}, function(dirEntry){
+        dirEntry.getDirectory("louvre", {create: true}, function (entry) {
+          entry.removeRecursively(function() {
+            console.log("Remove Recursively Succeeded");
+          }, null);
+        }, null);
+        dirEntry.getFile("museum.json", {create: true}, function(fileEntry) {
+          fileEntry.createWriter(function(writer){
+            writer.write(mjsonstr);
+            //window.resolveLocalFileSystemURL(cordova.file.externalRootDirectory + "parismuseum-media-extension/museum.json", function(fileEntry3){
+            window.resolveLocalFileSystemURL(cordova.file.applicationStorageDirectory + "parismuseum-media-extension/museum.json", function(fileEntry2){                    
+              fileEntry2.file(function(file2) {
+                
+                var reader = new FileReader();
+                reader.onloadend = function(e) {
+                  var museumjson = '{"museums": [' + this.result + ']}';
+                  var mjson = JSON.parse(museumjson);
+                  defer.resolve(mjson);
+                }
+                  
+                reader.readAsText(file2);
+              }, null);
+            }, null);
+          }, null);
+        },null);
+      }, null);
+    }, null);
     return defer.promise;
   }
   function findAndRemove(array, property, value) {
@@ -200,16 +214,61 @@ starterControllers
     var deferred = $q.defer();
     //$scope.installing = true;
     window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSystem) {
-      fileSystem.root.getDirectory("parismuseum-media-extension", {create: true, exclusive: false},  function(dir){
-        zip.unzip(fileSystem.root.toURL() + path + '/' + filename, fileSystem.root.toURL() + dir.fullPath, function(){
+      //fileSystem.root.getDirectory("parismuseum-media-extension", {create: true, exclusive: false},  function(dir){
+      window.resolveLocalFileSystemURL(cordova.file.applicationStorageDirectory, function(dir){ 
+        dir.getDirectory("parismuseum-media-extension", {create: true, exclusive: false}, function(dirEntry){
+          //alert(dirEntry.fullPath);
+          zip.unzip(fileSystem.root.toURL() + path + '/' + filename, dirEntry.fullPath, function(){
+            window.resolveLocalFileSystemURL(cordova.file.applicationStorageDirectory + "parismuseum-media-extension/" + filename.split('.')[0] +"/museum.json", function(fileEntry){
+              //dirEntry.getFile()
+              fileEntry.file(function(file) {
+                var reader = new FileReader();
+                reader.onloadend = function(e) {
+                  //alert(this.result);
+                  var newText = this.result;
+                  //window.resolveLocalFileSystemURL(cordova.file.applicationStorageDirectory + "parismuseum-media-extension/museum.json", function(fileEntry2){
+                  dirEntry.getFile("museum.json", {create: true}, function(fileEntry2) {
+                    fileEntry2.createWriter(function(writer){
+                      if(writer.length == 0){
+                        writer.write(newText);
+                      }else{
+                        writer.seek(writer.length);
+                        writer.write(',' + newText);
+                      }
+                      
+                      //window.resolveLocalFileSystemURL(cordova.file.externalRootDirectory + "parismuseum-media-extension/museum.json", function(fileEntry3){
+                      window.resolveLocalFileSystemURL(cordova.file.applicationStorageDirectory + "parismuseum-media-extension/museum.json", function(fileEntry3){                    
+                        fileEntry3.file(function(file3) {
+                          
+                          var reader = new FileReader();
+                          reader.onloadend = function(e) {
+                            var museumjson = '{"museums": [' + this.result + ']}';
+                            var mjson = JSON.parse(museumjson);
+                            deferred.resolve(mjson);
+                          }
+                            
+                          reader.readAsText(file3);
+                        }, null);
+                      }, null);
+                    }, null);
+                  },null);
+                };
+                reader.readAsText(file);
+              }, null);
+            },null);
+          },null);
+        /*zip.unzip(fileSystem.root.toURL() + path + '/' + filename, fileSystem.root.toURL() + dir.fullPath, function(){
           //update parismuseum-media-extension/museum.json and parismuseum-media-extension/object.json
           //or create new parismuseum-media-extension/museum.json and parismuseum-media-extension/object.json
-          window.resolveLocalFileSystemURL(cordova.file.externalRootDirectory + "parismuseum-media-extension/" + filename.split('.')[0] +"/museum.json", function(fileEntry){
+          //window.resolveLocalFileSystemURL(cordova.file.externalRootDirectory + "parismuseum-media-extension/" + filename.split('.')[0] +"/museum.json", function(fileEntry){
+          window.resolveLocalFileSystemURL(cordova.file.applicationStorageDirectory + "parismuseum-media-extension/" + filename.split('.')[0] +"/museum.json", function(fileEntry){
+
             fileEntry.file(function(file) {
               var reader = new FileReader();
               reader.onloadend = function(e) {
                 var newText = this.result;
-                fileSystem.root.getFile("parismuseum-media-extension/museum.json",{create: true, exclusive: false}, function(fileEntry2){
+                //fileSystem.root.getFile("parismuseum-media-extension/museum.json",{create: true, exclusive: false}, function(fileEntry2){
+                window.resolveLocalFileSystemURL(cordova.file.applicationStorageDirectory + "parismuseum-media-extension/museum.json", function(fileEntry2){
                   fileEntry2.createWriter(function(writer){
                     if(writer.length == 0){
                       writer.write(newText);
@@ -218,8 +277,8 @@ starterControllers
                       writer.write(',' + newText);
                     }
                     
-                    window.resolveLocalFileSystemURL(cordova.file.externalRootDirectory + "parismuseum-media-extension/museum.json", function(fileEntry3){
-                    
+                    //window.resolveLocalFileSystemURL(cordova.file.externalRootDirectory + "parismuseum-media-extension/museum.json", function(fileEntry3){
+                    window.resolveLocalFileSystemURL(cordova.file.applicationStorageDirectory + "parismuseum-media-extension/museum.json", function(fileEntry3){                    
                       fileEntry3.file(function(file3) {
                         
                         var reader = new FileReader();
@@ -239,11 +298,13 @@ starterControllers
             }, null);
           }, null);
 
-        }, null); 
+        }, null); */
+        }, null);
       }, null);
-    }, null);
+      
+    },null);
     return deferred.promise;
-  };
+  }
   function installError(){
     alert('安装出错,请重新安装');
     $scope.installing = false;
@@ -273,9 +334,18 @@ starterControllers
       }
     }
     
+    
     $scope.museums = allmuseums;
   }
+  if($ionicPlatform.is('android'))
   $scope.updateMuseums (museums, $rootScope.museumjson.museums);
+else{
+       $scope.museums=[
+      { downloadlink: 'http://shye0000.webfactional.com/static/parismuseum_museum_extension/louvre.zip', downloaded: false, name: '卢浮宫 Musée du louvre', foldername: 'louvre', img: 'img/big/louvre@2x.png', id: 1},
+      { downloadlink: '', downloaded: false, name: '奥赛 Musée d\'orsay', foldername: 'orsay', img: 'img/big/orsay@2x.png', id: 2},
+      { downloadlink: '', downloaded: false, name: '蓬皮杜 Centre pompidou', foldername: 'pompidou', img: 'img/big/pompidou@2x.png', id: 3}
+    ];
+    }
   $scope.installing = false;
   $scope.downloading = false;
    $scope.installbusy = false;

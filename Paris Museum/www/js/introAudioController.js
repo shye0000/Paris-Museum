@@ -29,7 +29,7 @@ starterControllers
   document.getElementById("introplayerblock").style.height = y*0.65 + 'px';
   document.getElementById("introdescription").style.marginTop = y*0.65 + 'px';
   document.getElementById("playbutton").style.display = 'none';
-  document.getElementById("pausebutton").style.display = 'play';
+  document.getElementById("pausebutton").style.display = 'block';
   document.getElementById("currentpoint").style.left = "0%";
   document.getElementById("currenttimeline").style.width = "0%";
   $scope.dragging = false;
@@ -64,7 +64,7 @@ starterControllers
   
   $scope.playAudio = function() {
     if(!mymedia){ 
-      MediaSrv.loadMedia($scope.introobject.audio).then(function(media) {
+      MediaSrv.loadMedia($scope.introobject.audio, 'root').then(function(media) {
         mymedia = media;
         var counter = 0;
         var timerDur = setInterval(function() {

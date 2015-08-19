@@ -41,7 +41,7 @@ angular.module('starter.controllers', ['ngAudio'])
   };
 })
 
-.controller('ParisCtrl', function($scope, $rootScope) {
+.controller('ParisCtrl', function($scope, $rootScope,  $state, $compile) {
   $scope.$on('$ionicView.beforeEnter', function() {
       $rootScope.barColor = '#3A2D3E';
       $rootScope.fakebarColor = '#31C3F6';
@@ -49,30 +49,57 @@ angular.module('starter.controllers', ['ngAudio'])
         StatusBar.backgroundColorByHexString("#31C3F6");
       }
   });
-  w = window,
-    d = document,
-    e = d.documentElement,
-    g = d.getElementsByTagName('body')[0],
-    x = w.innerWidth || e.clientWidth || g.clientWidth,
-    y = w.innerHeight|| e.clientHeight|| g.clientHeight;
-  document.getElementById("parisimg").style.height = (y - 44)/2 + 'px';
-  document.getElementById("parisbutton").style.height = (y - 44)/2 + 'px';
-  document.getElementById("paristitle").style.bottom = (y - 44)/4 + 'px';
-  var elems = document.getElementsByClassName("parisbackground");
-  for(var i = 0; i < elems.length; i++) {
-    elems[i].style.height= (y - 44)/4 + 'px';
-  }
-  elems = document.getElementsByClassName("parisbackgroundimg");
-  for(var i = 0; i < elems.length; i++) {
-    elems[i].style.height= (y - 44)/5 + 'px';
-    elems[i].style.top= '50%';
-    elems[i].style.marginTop= '-'+(y - 44)/10 + 'px';
-    elems[i].style.left= '50%';
-    elems[i].style.marginLeft= '-'+(y - 44)/10 + 'px';
-  }
+  $scope.$on('$ionicView.afterEnter', function() {
+    w = window,
+      d = document,
+      e = d.documentElement,
+      g = d.getElementsByTagName('body')[0],
+      x = w.innerWidth || e.clientWidth || g.clientWidth,
+      y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+    document.getElementById("parisimg").style.height = (y - 44)/2 + 'px';
+    document.getElementById("parisbutton").style.height = (y - 44)/2 + 'px';
+    document.getElementById("paristitle").style.bottom = (y - 44)/4 + 'px';
+    var elems = document.getElementsByClassName("parisbackground");
+    for(var i = 0; i < elems.length; i++) {
+      elems[i].style.height= (y - 44)/4 + 'px';
+    }
+    elems = document.getElementsByClassName("parisbackgroundimg");
+    for(var i = 0; i < elems.length; i++) {
+      elems[i].style.height= (y - 44)/5 + 'px';
+      elems[i].style.top= '50%';
+      elems[i].style.marginTop= '-'+(y - 44)/10 + 'px';
+      elems[i].style.left= '50%';
+      elems[i].style.marginLeft= '-'+(y - 44)/10 + 'px';
+    }
+  });
+  $scope.click = function (item, e) {
+    
+    setTimeout(function(){ $state.go(item.state); }, 1000);
+  };
+  $scope.buttons1 = [
+    {
+      state: 'app.map',
+      img: 'img/big/map@2x.png'
+    },
+    {
+      state: 'app.introduce',
+      img: 'img/big/introduce@2x.png'
+    }
+  ];
+  $scope.buttons2 = [
+    {
+      state: 'app.museums',
+      img: 'img/big/museum@2x.png'
+    },
+    {
+      state: 'app.contact',
+      img: 'img/big/contact@2x.png'
+    }
+  ];
+  
 })
 
-.controller('MuseumCtrl', function($scope, $stateParams, $rootScope, $q) {
+.controller('MuseumCtrl', function($scope, $stateParams, $rootScope, $q, $state) {
   $scope.$on('$ionicView.beforeEnter', function() {
     $rootScope.barColor = '#2482B4';
     $rootScope.fakebarColor = '#31C3F6';
@@ -80,6 +107,14 @@ angular.module('starter.controllers', ['ngAudio'])
       StatusBar.backgroundColorByHexString("#31C3F6");
     }
   });
+  $scope.click = function (museumid, type) {
+    setTimeout(function(){
+      if (type == "intromuseum")
+        $state.go('app.intromuseum', {museumId:museumid});
+      else if (type == "objects")
+        $state.go('app.objectsmuseum', {museumId:museumid});
+    }, 1000);
+  }
   w = window,
     d = document,
     e = d.documentElement,
@@ -108,7 +143,22 @@ angular.module('starter.controllers', ['ngAudio'])
   });
   function getMuseumObjects(foldername) {
     var deferred = $q.defer();
-    window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSystem){
+    window.resolveLocalFileSystemURL(cordova.file.applicationStorageDirectory + "parismuseum-media-extension/"+ foldername +"/object.json", function(fileEntry){
+
+      fileEntry.file(function(file) {
+        var reader = new FileReader();
+        reader.onloadend = function(e) {
+          var objectjson = '{"objects": [' + this.result + ']}';
+          var ojson = JSON.parse(objectjson);
+          $scope.$apply( function() {
+            deferred.resolve(ojson);
+          });
+        }
+        reader.readAsText(file);
+      }, null);
+    }, null);
+   
+    /*window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSystem){
       fileSystem.root.getFile("parismuseum-media-extension/"+ foldername +"/object.json",{create: false, exclusive: false}, function(fileEntry){
         fileEntry.file(function(file) {
           var reader = new FileReader();
@@ -122,7 +172,7 @@ angular.module('starter.controllers', ['ngAudio'])
           reader.readAsText(file);
         }, null);
       }, null);
-    }, null);
+    }, null);*/
     return deferred.promise;
   }
   

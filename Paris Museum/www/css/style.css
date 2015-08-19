@@ -332,26 +332,19 @@ fake-statusbar {
 	height: 100%;
 }
 .museumservicebutton{
+	position: relative;
 	height: 35px;
 	width: 100px;
-	border-color: #3FC1F2;
-	border-width: 1px;
-	border-style: solid;
-	border-radius: 2px;
+	!border-color: #3FC1F2;
+	!border-width: 1px;
+	!border-style: solid;
+	!border-radius: 2px;
 	font-size: 17px;
 	color: white;
 	padding-top: 6px;
 	margin-left: auto;
 	margin-right: auto;
   	cursor: pointer;
-}
-.museumservicebutton:active{
-	-moz-opacity: 0.50;
-	-khtml-opacity: 0.50;
-	opacity: 0.50;
-	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha"(Opacity=50);
-	filter: progid:DXImageTransform.Microsoft.Alpha(opacity=50);
-	filter:alpha(opacity=50);
 }
 
 
@@ -466,7 +459,7 @@ ion-content.objectlistwithsearchbar{
 .playbutton{
 	border-width: 0;
 	position: absolute;
-	bottom: 2.5px;
+	bottom: 7px;
 	left: 50%;
 	margin-left: -25px;
 	!text-overflow: initial;
@@ -713,4 +706,174 @@ a[title="Report errors in the road map or imagery to Google"], a[title="向 Goog
 	display:inline-block;
 	height: 16px;
 	width: 40px;
+}
+
+
+.cityintroduce {
+	background-color: #5E4C66;
+
+}
+.introduce-subheader {
+	background-color: #5E4C66!important;
+	border: 0px !important;
+    border-bottom-color: transparent !important;
+    background-image: none;
+    border-bottom: none;
+	text-align: center;
+	padding-top: 10px;
+	height: 60px;
+}
+ion-content.cityintroducecontent {
+  margin-top: 60px;
+  transition: 1s;
+}
+.introducetabs {
+	border-width: 2px;
+	border-radius: 3px;
+	border-style: solid;
+	border-color: #40BFEC;
+	
+	width: 300px;
+	margin-left: auto;
+	margin-right: auto;
+}
+.cityintroducebutton:last-child {
+	!margin-right: -7px!important;
+
+}
+.cityintroducebutton:first-child {
+	margin-left: -6px;
+
+}
+
+.cityintroducebutton {
+	background-color: rgba(255,255,255,0);
+	border-left-width: 0px;
+	border-top-width: 0;
+	border-bottom-width: 0;
+	border-right-width: 0;
+	border-style: solid;
+	border-color: #40BFEC;
+	padding: 8px;
+	color: white;
+	font-size: 15px;
+	margin-right: -6px;
+	!margin-left: -1px;
+
+}
+.cityintroducebuttonfocus {
+	background-color: #3FC1F2;
+}
+.cityintroducebuttondivider {
+	border-left-width: 1px;
+	border-style: solid;
+	border-color: #40BFEC;
+}
+.cityintroducediv {
+	color: white;
+	padding: 30px 20px;
+	font-size: 15px;
+	text-align: justify;
+	transition: 1s;
+}
+.imgspeaker {
+	height: 16px;
+}
+table {
+	!width: 100%;
+	margin: 0 auto;
+
+}
+table th { font-weight: bold;  border-bottom: 2px solid #D6D6D6; }
+table td { border-bottom: 1px solid #D6D6D6; border-top: 1px solid #D6D6D6; vertical-align:middle;}
+table td, table th { padding: 6px 6px; text-align: left; font-size: 15px; }
+table tr.selected {
+	background-color: #4A3852;
+	color:white;
+}
+
+.animate-hide {
+  position: absolute;
+  -webkit-transition: all linear 0.4s;
+  transition: all linear 0.4s;
+  left: 0;
+  width: 100%;
+  opacity: 1;
+}
+
+.animate-hide.ng-hide {
+  opacity: 0;
+  width: 100%;
+}
+.hideleft {
+  position: absolute;	
+  opacity: 0;
+  left: -300px;
+}
+.hideright {
+  position: absolute;
+  opacity: 0;
+  left: 300px;
+}
+
+.material{
+  position:relative;
+  color:white;
+  margin: 20px auto;
+  height:400px;
+  width:500px;
+  background:#f45673;
+  
+}
+
+.ripple{
+  overflow:hidden;
+}
+
+.ripple-effect{
+  position: absolute;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  background: white;
+  -ms-animation: ripple-animation 1s;
+  -o-animation: ripple-animation 1s;
+  -moz-animation: ripple-animation 1s;
+  -webkit-animation: ripple-animation 1s;
+  animation: ripple-animation 1s;
+}
+
+@keyframes ripple-animation {
+    0% {
+      	transform: scale(1);
+		opacity: 0.5;
+    }
+    100% {
+      	transform: scale(100);
+		opacity: 0;
+    }
+}
+@-moz-keyframes ripple-animation {
+    0% {
+      	transform: scale(1);
+		opacity: 0.5;
+    }
+    100% {
+      	transform: scale(100);
+		opacity: 0;
+    }
+}
+@-webkit-keyframes ripple-animation {
+    0% {
+      	-webkit-transform: scale(1);
+		opacity: 0.5;
+    }
+    100% {
+      	-webkit-transform: scale(100);
+		opacity: 0;
+    }
+} 
+.mycol{
+	position: relative;
+	font-size: 17px;
 }

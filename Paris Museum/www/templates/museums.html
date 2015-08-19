@@ -1,14 +1,11 @@
 <ion-view view-title="博物馆">
   <ion-content class="museumscontent">
 
-      <a ng-click="museumclick(museum.id, museum.downloadlink, museum.foldername, museum.downloaded)" ng-repeat="museum in museums" class="item item-image museumimg mybutton" my-repeat-directive="{{museum.img}}">
+      <a ng-click="museumclick(museum.id, museum.downloadlink, museum.foldername, museum.downloaded, $event)" ng-repeat="museum in museums" class="item item-image museumimg ripple" my-repeat-directive="{{museum.img}}" ripple="$event">
         <div class="mask" ng-show="!museum.downloaded"> </div>
-      	<div >
     			<div class="museumdivider">{{museum.name}}</div>
     			<div class = "icondownload" ng-show="!museum.downloaded" ng-click="askingdownload('download', museum.downloadlink, museum.foldername, museum.id);$event.stopPropagation()"><img src="img/big/icondownload.png"/></div>
     			<div class = "icondelete" ng-show="museum.downloaded" ng-click="delete(museum.id, museum.foldername);$event.stopPropagation()"><img src="img/big/icondelete.png" /></div>
-          
-  	    </div>
         
       </a>
       

@@ -1,4 +1,128 @@
-<ion-view view-title="介绍">
-  <ion-content>
+<ion-view view-title="城市介绍"   ng-init="introduce=false;language=false;safety=false;telenb=false;">
+	<div class="bar bar-subheader introduce-subheader">
+	    <div class="introducetabs">
+		    <button class="cityintroducebutton" ng-click="buttonclick('introduce')" ng-class="{cityintroducebuttonfocus: introduce}">城市介绍</button>
+		    <span class="cityintroducebuttondivider " ng-hide="introduce||language"></span>
+		    <button class="cityintroducebutton" ng-click="buttonclick('language')" ng-class="{cityintroducebuttonfocus: language}">语言帮助</button>
+		    <span class="cityintroducebuttondivider " ng-hide="language||safety"></span>
+	    	<button class="cityintroducebutton" ng-click="buttonclick('safety')" ng-class="{cityintroducebuttonfocus: safety}">安全指南</button>
+	    	<span class="cityintroducebuttondivider " ng-hide="safety||telenb"></span>
+	    	<button class="cityintroducebutton" ng-click="buttonclick('telenb')" ng-class="{cityintroducebuttonfocus: telenb}">实用电话</button>
+	    </div>
+  	</div>
+  <ion-content class="cityintroduce cityintroducecontent">
+  	<div class="cityintroducediv introduce " ng-show="introduce" ng-class="{hideleft: (language||safety||telenb)&&!introduce, 'animate-hide': entered}">
+		<p>
+			巴黎是一座世界历史名城，名胜古迹比比皆是，埃菲尔铁塔、凯旋门、爱丽舍宫、凡尔赛宫、卢浮宫、协和广场、巴黎圣母院、乔治·蓬皮杜全国文化艺术中心等， 是国内外游客流连忘返的地方。美丽的塞纳河两岸，公园、绿地星罗棋布，32座大桥横跨河上，使河上风光更加妩媚多姿。河中心的城岛是巴黎的摇篮和发源地。塞纳河畔圣米歇尔林荫大道有绵延数公里的旧书市场，每天都有不少国内外学者、游客来这里选购心爱的古籍，形成塞纳河畔古老的文化区——拉丁区的一大特色。 巴黎还是一座“世界会议城”。它以明媚的风光、丰富的名胜古迹、多姿多采的文化活动以及现代化的服务设施，迎来了众多的国际会议。联合国教科文组织、经济合作与发展组织等国际组织的总部均设在巴黎。巴黎的“街头艺术”十分活跃，城市西北部的泰尔特尔艺术广场是世界闻名的露天画廊，每天都有不少画家在这里即席作画出售。在市中心的沙特莱广场和圣·日耳曼德伯广场等地，青年学生和市民经常自带乐器举行音乐会，表演各种节目。
+		</p>
+		<p>城市位置 : 48°52′北纬 2°20′东经</p>
+		<p>时区 CET : 夏时制 (DST):UTC+2</p>
+		<p>人口构成 : 法国人、英国人、阿拉伯人、华人、印度人、非洲人</p>
+		<p>城市宗教 : 天主教、新教、东正教、伊斯兰教</p>
+		<p>通用语言 : 法语</p>
+		<p>通用货币 : 欧元 (EUR，€)</p>
+		<p>电话代码 : +33</p>
+		<p>
+			气候条件 : 巴黎为温带海洋性气候，终年盛行西风，冬天的巴黎，难得见到太阳，雨水比较充沛，多雾。
+		</p>
+  	</div>
+  	<div class="cityintroducediv language animate-hide" ng-show="language" ng-class="{hideleft: (safety||telenb)&&!language, hideright: introduce&&!language, 'animate-hide': entered}">
+		<p>官方语言为法语，年轻人大多会听说一些英语，在2006年以前英语教育并非必修语言，所以很多年长人士不一定会说英文。但由于历史原因，不少英文单词和
+法文单词通用，只是发音差异较大。在华人聚集的3区和13区，华人之间一般都能使用中文沟通。</p><br/>
+		<table>
+			<tr>
+				<th></th>
+				<th>常用语</th>
+				<th>翻译</th>
+				<th>中文注音</th>
+			</tr>
+			<tr ng-repeat="word in wordItems" ng-class="{'selected':$index == selectedRow}" ng-click="setClickedRow($index, word.audio)">
+				<td><img class="imgspeaker" src="img/big/white-speaker-24.png"/></td>
+				<td>{{word.french}}</td>
+				<td>{{word.chinese}}</td>
+				<td>{{word.chinesesound}}</td>
+			</tr>
+		</table><br/>
+		<p><b>文字标识</b></p>
+		<table>
+			<tr>
+				<td>ENTREE - 入口</td>
+				<td>SORTIE - 出口</td>
+			</tr>
+			<tr>
+				<td>OUVERT - 营业中</td>
+				<td>FERME - 停止营业</td>
+			</tr>
+			<tr>
+				<td>INTERDIT - 禁止</td>
+				<td>Toilettes - 洗手间</td>
+			</tr>
+			<tr>
+				<td>Hommes - 男</td><td>Femmes - 女</td>
+			</tr>
+			<tr>
+				<td>La Poste - 邮局</td><td>Banque - 银行</td>
+			</tr>
+			<tr>
+				<td>Pharmacie - 药店</td><td>Marché - 市场</td>
+			</tr>
+			<tr>
+				<td>Ambassade - 使馆</td><td>Commissariat - 派出所</td>
+			</tr>
+		</table>
+  	</div>
+  	<div class="cityintroducediv safety animate-hide" ng-show="safety" ng-class="{hideleft: telenb&&!safty, hideright: (introduce||language)&&!safety, 'animate-hide': entered}">
+		<p>巴黎是全世界最受欢迎的旅游胜地之一，每年都会接待两千九百万游客。即使警方采取各项措施让巴黎成为一个安全的地方，众多游客也仍然有可能成为扒手与骗子的目标。</p>
+		<br/>
+		<p><b>当心几种诈骗形式</b></p>
+		<br/>
+		<p>1. 假警察诈骗</p>
+		<p>一些诈骗者可能会假装成警察，要求您出示证件并索要金钱。您应该知道，真正的警察绝不会索要钱财。当遇到自称警察的人，请向他要求出示警牌。真正的警牌是一块白底的三色塑料卡，中间印有“police”字样，蓝白红条纹穿过中间，正反面均有文字标识。</p>
+		<p>2. 假请愿签名</p>
+		<p>在巴黎的旅游景区，您会频频遇到年轻男孩女孩，多半是未成年人，手上拿着请愿书，装成聋哑人要钱。</p>
+		<p>3. 猜牌赌博</p>
+		<p>猜牌赌博常常见诸于大街小巷，通常用两张黑牌和一张红牌组成(变种则是用一个白球两个彩球，或者小圆盘等等)。摊主向客人展示这些彩牌，并让客人押注(至少50欧元)猜测三张牌中哪张牌是红牌。如果猜中可得两倍，猜错则输掉全部赌注。</p>
+		<p>其实在整个过程中，摊主会有至少两名同伙协助。除了高谈阔论吸引人气和对周围环境进行监视，同时也假装是赌客以吸引受害者参与并获得他们的赌注。</p>
+		<p>4. 警惕歌舞厅强迫消费</p>
+		<p>避免光顾一些巴黎歌舞厅，尤其是在皮卡尔区的歌舞厅。那里会有人在路边招揽客户。您将因此被强迫接受一些不请自来女性的陪伴和消费价格昂贵的饮料。一切消费信息和服务内容都必须向消费者展示。请选择不在路边招揽客户的大型娱乐场所，他们的消费价格都会在表演厅内外张贴。</p>
+		<br/>
+		<p><b>如何防止被盗抢</b></p>
+		<br/>
+		<p>1. 出门不要携带大额现金，尽量多用银行卡，丢失后及时挂失。</p>
+		<p>2. 身份证、护照和机票等重要证件，随身携带复印件即可，原件最好保存在旅馆保险箱等安全场所。汽车后备箱并不安全，经常发生被撬事件。一旦证件丢失，可以在附近垃圾箱寻找，同时尽快去附近警察局报案，然后再去中国使领馆补办旅行证。</p>
+		<p>3. 住宿吃饭应该选择安全区域，最好不要夜间出行。</p>
+		<p>4. 热门景点需特别提防</p>
+		<br/>
+		<p><b>危险区域</b></p>
+		<br/>
+		<p>巴黎市共分为20个区，以西岱岛为中心，从内到外呈螺旋形排列，其中东部的10区、11区、北部的18区、19区、20区和邻近巴黎的法国93省治安状况较差，经常发生抢盗案件，游客应尽量避免前往。</p>
+		<p>在戴高乐机场去巴黎市中心的快线列车上，往往是偷盗抢劫常发地带，最好不要让行李离开视线。同样，往返于戴高乐机场到市中心的高速公路上，因为堵车缘故，游客们也成为摩托党劫匪的囊中之物。后车窗及车内显眼处，不要有任何财物出现。</p>
+		<p>香榭丽舍大街或者老佛爷百货等地不要答应给陌生的中国人买 LV 包，逃税算违法不说，去海关退税也会有麻烦。</p>
+		<p>在蒙马特高地不要理往手上套圈的黑人，同样有危险。</p>
+		<p>巴黎春天商场、老佛爷商场、卢浮宫、埃菲尔铁塔、凡尔赛宫、枫丹白露、红磨坊附近都是偷窃集中的高发区。咖啡厅是小偷集中的地方，比如巴黎歌剧院附近的和平咖啡馆、星巴克咖啡馆等。</p>
+		<br/>
+		<p><b>受到暴力袭击或被盗，怎么办?</b></p>
+		<br/>
+		<p>受到暴力袭击</p>
+		<p>1. 尽量制造声音(尖叫)以吓跑攻击者;</p>
+		<p>2. 到最近的商店躲避，并让人打电话报警;</p>
+		<p>3. 对犯罪分子外貌进行描述;</p>
+		<p>4 .指出罪犯逃逸的方向和方法;</p>
+		<p>遭遇偷窃</p>
+		<p>请向最近的警察局报案，巴黎公共警务的公共接待点遍布整个首都。其中20个市区的警察总局每周七天24小时开放，以接待受害者并提供支持和援助。</p>
+		<p>在报案的时候警员使用贯通16种语言的 SAVE(外国受害人服务系统)软件接受外国游客的报案，并提供一份用游客母语编写的回执，以方便游客接下来与使馆联系以及回国后办理手续。</p>
+
+  	</div>
+  	<div class="cityintroducediv telenb animate-hide" ng-show="telenb" ng-class="{hideright: !telenb&&(introduce||language||safety), 'animate-hide': entered}">
+		<p>报警 : 17</p>
+		<p>欧洲紧急电话号码 : 112</p>
+		<p>报警支持中文服务</p>
+		<p>火警 : 18</p>
+		<p>医疗急救 : 15</p><br/>
+		<p>出租车统一电话 : 01 45 30 30 30</p><br/>
+		<p>中国驻法国使馆领事部 : </p>
+		<p>11 avenue George V - 75008 Paris</p>
+		<p>电话 : 01 49 52 19 50 / 传真 : 01 47 20 24 22</p>
+  	</div>
   </ion-content>
 </ion-view>

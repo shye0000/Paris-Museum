@@ -2,11 +2,11 @@
   	<div id="introplayerblock" class="bar bar-subheader introplayerblock" back-img="{{introobject.introbackground}}">
 	  		<div class="player">
 	  		</div>
-	  		<div class="playbutton" id="playbutton" ng-click='playAudio()'><img src="img/big/buttonplay@2x.png"></div>
-	  		<div class="playbutton pausebutton" id="pausebutton" ng-click='pauseAudio()'><img src="img/big/pausebutton@2x.png"></div>
-	  		<div class="playbutton laterbutton" ng-click='later()'><img src="img/big/laterbutton@2x.png"></div>
-	  		<div class="playbutton ealierbutton" ng-click='ealier()'><img src="img/big/ealierbutton@2x.png"></div>
-	  		<div id="locationbutton" class="playbutton locationbutton" ng-click=''><img src="img/big/locationbutton@2x.png"></div>
+	  		<a class="playbutton cbutton cbutton--effect-boris" id="playbutton" ng-click='playAudio()'><img src="img/big/buttonplay@2x.png"></a>
+	  		<a class="playbutton pausebutton cbutton cbutton--effect-boris" id="pausebutton" ng-click='pauseAudio()'><img src="img/big/pausebutton@2x.png"></a>
+	  		<a class="playbutton laterbutton cbutton cbutton--effect-boris" ng-click='later()'><img src="img/big/laterbutton@2x.png"></a>
+	  		<a class="playbutton ealierbutton cbutton cbutton--effect-boris" ng-click='ealier()'><img src="img/big/ealierbutton@2x.png"></a>
+	  		<a id="locationbutton" class="playbutton locationbutton cbutton cbutton--effect-boris" ng-click=''><img src="img/big/locationbutton@2x.png"></a>
 	  		<div class="currentpoint" id="currentpoint" ng-touchstart="touchStart($event)" hm-dragstart= "dragStart($event)" hm-dragend= "dragEnd($event)" hm-drag-right= "drag($event)" hm-drag-left= "drag($event)"><img id="currentpointimg" src="img/big/currentpoint@2x.png"></div>
  			<div id="timeline" class="timeline"></div>
  			<div id="currenttimeline"></div>

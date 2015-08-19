@@ -88,7 +88,7 @@ starterControllers
     google.maps.event.addDomListener(controlUI, 'click', function() {
         map.setCenter(new google.maps.LatLng(GeoMarker.getPosition().G, GeoMarker.getPosition().K));
         map.setZoom(11);
-    });
+    }, null);
 
   }
   function CenterControl(controlDiv, map) {

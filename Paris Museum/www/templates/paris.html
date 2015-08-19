@@ -10,26 +10,16 @@
 		  	<div class="divider-blue"></div>
 		  	<div id="parisbutton" class="parisbuttons">
 				<div class="row nopadding row-fix parisrow">
-					<div class="col nopadding ">
-					  	<div class="parisbackground button1 ">
-					  	  	<a href="#/app/map"><img class="parisbackgroundimg mybutton" src="img/big/map@2x.png" class="mybutton"></a>
-						</div>
-					</div>
-					<div class="col nopadding">
-					   <div class=" parisbackground button2">
-					  	  	<a href="#/app/introduce"><img class="parisbackgroundimg mybutton" src="img/big/introduce@2x.png" class="mybutton"></a>
+					<div class="col nopadding " ng-repeat="button in buttons1">
+					  	<div class="parisbackground button1 ripple" ng-click="click(button)" ripple="$event">
+					  		<img class="parisbackgroundimg" src="{{button.img}}">
 						</div>
 					</div>
 				</div>
-				<div class="row nopadding fow-fix parisrow">
-					<div class="col nopadding">
-					  	<div class="parisbackground button3">
-					  	  	<a href="#/app/museums"><img class="parisbackgroundimg mybutton" src="img/big/museum@2x.png" class="mybutton"></a>
-						</div>
-					</div>
-					<div class="col nopadding">
-					  	<div class=" parisbackground button4">
-					  	  	<a href="#/app/contact"><img class="parisbackgroundimg mybutton" src="img/big/contact@2x.png" class="mybutton"></a>
+				<div class="row nopadding row-fix parisrow">
+					<div class="col nopadding " ng-repeat="button in buttons2">
+					  	<div class="parisbackground button1 ripple" ng-click="click(button)" ripple="$event">
+					  		<img class="parisbackgroundimg" src="{{button.img}}">
 						</div>
 					</div>
 				</div>

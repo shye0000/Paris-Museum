@@ -8,7 +8,7 @@
 
 angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'angular-gestures', 'ngTouch'])
 
-.run(function($ionicPlatform, $state, $rootScope, $cordovaFile, $window, $q) {
+.run(function($ionicPlatform, $state, $rootScope, $cordovaFile, $window, $q, $cordovaSplashscreen) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -51,9 +51,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'angular
     }
     function gotFS(fileSystem) {
       var defer = $q.defer();
-      
-      $rootScope.root = fileSystem.root.toURL().substring(7).slice(0, -1);
-      fileSystem.root.getFile("parismuseum-media-extension/museum.json",{create: false, exclusive: false}, function(fileEntry){
+      console.log(cordova.file.applicationStorageDirectory);
+      //$rootScope.root = fileSystem.root.toURL().substring(7).slice(0, -1);
+      $rootScope.root = cordova.file.applicationStorageDirectory;
+      //fileSystem.root.getFile("parismuseum-media-extension/museum.json",{create: false, exclusive: false}, function(fileEntry){
+      window.resolveLocalFileSystemURL(cordova.file.applicationStorageDirectory + "parismuseum-media-extension/museum.json", function(fileEntry){
+
         fileEntry.file(function(file) {
           var reader = new FileReader();
           reader.onloadend = function(e) {
@@ -161,6 +164,25 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'angular
     }
   }
 })
+.directive("ripple", function($compile){
+  return function(scope, element){
+    element.bind("click", function(){
+      if (angular.element(event.target).prop('className').indexOf("ripple") > -1) var elem = angular.element(event.target);
+      else var elem = angular.element(event.target.parentNode);
+
+      var xPos = event.pageX - elem.prop('offsetLeft'),
+          yPos = event.pageY - elem.prop('offsetTop') - 44,
+          //ripplediv = $compile("<div class='ripple-effect' style='height:" + angular.element(e.target).prop('clientHeight')/2 + "px;width:" + angular.element(e.target).prop('clientHeight')/2 + "px;top:" + (yPos - (angular.element(e.target).prop('clientHeight')/4)) + "px;left:" + (xPos - (angular.element(e.target).prop('clientHeight')/4)) + "px;'></div>")($scope);
+          ripplediv = $compile("<div class='ripple-effect' style='height:" + elem.prop('clientHeight')/3 + "px;width:" + elem.prop('clientHeight')/3 + "px;top:" + (yPos - (elem.prop('clientHeight')/6)) + "px;left:" + (xPos - (elem.prop('clientHeight')/6)) + "px;'></div>")(scope);
+      console.log("<div class='ripple-effect-r' style='height:" + elem.prop('clientHeight')/3 + "px;width:" + elem.prop('clientHeight')/3 + "px;top:" + (yPos - (elem.prop('clientHeight')/6)) + "px;left:" + (xPos - (elem.prop('clientHeight')/6)) + "px;'></div>");
+
+      elem.append(ripplediv);
+      setTimeout(function(){
+        ripplediv.remove();
+      }, 1000);
+    });
+  };
+})
 .directive('backImg', function($rootScope){
     return function(scope, element, attrs){
       var url = attrs.backImg;
@@ -171,6 +193,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'angular
     };
     
 })
+
 .directive('myRepeatDirective', function($rootScope) {
   return function(scope, element, attrs) {
 
@@ -202,7 +225,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'angular
     getErrorMessage: getErrorMessage
   };
 
-  function loadMedia(src, onError, onStatus, onStop) {
+  function loadMedia(src, type, onError, onStatus, onStop) {
       var defer = $q.defer();
       $ionicPlatform.ready(function() {
         var mediaSuccess = function() {
@@ -223,9 +246,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'angular
         };
 
         if ($ionicPlatform.is('android')) {
-          src = 'file://' + $rootScope.root + $rootScope.mediadir+src;
+          if (type == "root")
+            src = $rootScope.root + $rootScope.mediadir+src;
                  //'/android_asset/www/audio/objects/minion_ring_ring.mp3';
                  //'file://' + $rootScope.root + $rootScope.mediadir+'Evergreen Tree-Cliff Richard.mp3';
+          if (type == "intern")
+            src = '/android_asset/www/' + src;
         }
         var media = new $window.Media(src, mediaSuccess, mediaError, mediaStatus);
         media.status = mediaStatus;
@@ -336,7 +362,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'angular
       url: '/introduce',
       views: {
         'menuContent': {
-          templateUrl: 'templates/introduce.html'
+          templateUrl: 'templates/introduce.html',
+          controller: 'introduceCtrl'
         }
       }
     })
