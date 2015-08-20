@@ -27,6 +27,7 @@
     "org.apache.cordova.splashscreen"
   ],
   "cordovaPlatforms": [
-    "android"
+    "android",
+    "ios"
   ]
 }
