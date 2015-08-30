@@ -1,0 +1,163 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   '-g',
+1 verbose cli   'install',
+1 verbose cli   'angular-mocks',
+1 verbose cli   '--save-dev' ]
+2 info using npm@2.13.2
+3 info using node@v0.12.7
+4 verbose install initial load of /usr/local/lib/package.json
+5 verbose readDependencies loading dependencies from /usr/local/lib/package.json
+6 silly cache add args [ 'angular-mocks', null ]
+7 verbose cache add spec angular-mocks
+8 silly cache add parsed spec { raw: 'angular-mocks',
+8 silly cache add   scope: null,
+8 silly cache add   name: 'angular-mocks',
+8 silly cache add   rawSpec: '',
+8 silly cache add   spec: '*',
+8 silly cache add   type: 'range' }
+9 silly addNamed angular-mocks@*
+10 verbose addNamed "*" is a valid semver range for angular-mocks
+11 silly addNameRange { name: 'angular-mocks', range: '*', hasData: false }
+12 silly mapToRegistry name angular-mocks
+13 silly mapToRegistry using default registry
+14 silly mapToRegistry registry https://registry.npmjs.org/
+15 silly mapToRegistry uri https://registry.npmjs.org/angular-mocks
+16 verbose addNameRange registry:https://registry.npmjs.org/angular-mocks not in flight; fetching
+17 verbose get https://registry.npmjs.org/angular-mocks not expired, no request
+18 silly addNameRange number 2 { name: 'angular-mocks', range: '*', hasData: true }
+19 silly addNameRange versions [ 'angular-mocks',
+19 silly addNameRange   [ '1.2.18',
+19 silly addNameRange     '1.2.19',
+19 silly addNameRange     '1.2.20',
+19 silly addNameRange     '1.2.21',
+19 silly addNameRange     '1.2.22',
+19 silly addNameRange     '1.2.25',
+19 silly addNameRange     '1.3.0-rc.5',
+19 silly addNameRange     '1.3.0',
+19 silly addNameRange     '1.3.1',
+19 silly addNameRange     '1.3.2',
+19 silly addNameRange     '1.3.3',
+19 silly addNameRange     '1.3.4-build.3588',
+19 silly addNameRange     '1.2.27',
+19 silly addNameRange     '1.3.4',
+19 silly addNameRange     '1.3.5',
+19 silly addNameRange     '1.3.6',
+19 silly addNameRange     '1.3.7',
+19 silly addNameRange     '1.2.28',
+19 silly addNameRange     '1.3.8',
+19 silly addNameRange     '1.4.0-beta.0',
+19 silly addNameRange     '1.3.9',
+19 silly addNameRange     '1.3.10',
+19 silly addNameRange     '1.4.0-beta.1',
+19 silly addNameRange     '1.4.0-beta.2',
+19 silly addNameRange     '1.3.11',
+19 silly addNameRange     '1.4.0-beta.3',
+19 silly addNameRange     '1.3.12',
+19 silly addNameRange     '1.3.13',
+19 silly addNameRange     '1.4.0-beta.4',
+19 silly addNameRange     '1.3.14',
+19 silly addNameRange     '1.4.0-beta.5',
+19 silly addNameRange     '1.4.0-beta.6',
+19 silly addNameRange     '1.3.15',
+19 silly addNameRange     '1.4.0-rc.0',
+19 silly addNameRange     '1.4.0-rc.1',
+19 silly addNameRange     '1.4.0-rc.2',
+19 silly addNameRange     '1.4.0',
+19 silly addNameRange     '1.3.16',
+19 silly addNameRange     '1.4.1',
+19 silly addNameRange     '1.4.2',
+19 silly addNameRange     '1.3.17',
+19 silly addNameRange     '1.4.3',
+19 silly addNameRange     '1.4.4',
+19 silly addNameRange     '1.3.18' ] ]
+20 silly addNamed angular-mocks@1.4.4
+21 verbose addNamed "1.4.4" is a plain semver version for angular-mocks
+22 silly cache afterAdd angular-mocks@1.4.4
+23 verbose afterAdd /home/shye0000/.npm/angular-mocks/1.4.4/package/package.json not in flight; writing
+24 verbose afterAdd /home/shye0000/.npm/angular-mocks/1.4.4/package/package.json written
+25 silly install resolved [ { name: 'angular-mocks',
+25 silly install resolved     version: '1.4.4',
+25 silly install resolved     description: 'AngularJS mocks for testing',
+25 silly install resolved     main: 'angular-mocks.js',
+25 silly install resolved     scripts: { test: 'echo "Error: no test specified" && exit 1' },
+25 silly install resolved     repository:
+25 silly install resolved      { type: 'git',
+25 silly install resolved        url: 'git+https://github.com/angular/angular.js.git' },
+25 silly install resolved     keywords:
+25 silly install resolved      [ 'angular',
+25 silly install resolved        'framework',
+25 silly install resolved        'browser',
+25 silly install resolved        'mocks',
+25 silly install resolved        'testing',
+25 silly install resolved        'client-side' ],
+25 silly install resolved     author:
+25 silly install resolved      { name: 'Angular Core Team',
+25 silly install resolved        email: 'angular-core+npm@google.com' },
+25 silly install resolved     license: 'MIT',
+25 silly install resolved     bugs: { url: 'https://github.com/angular/angular.js/issues' },
+25 silly install resolved     homepage: 'http://angularjs.org',
+25 silly install resolved     gitHead: '38253ca16b9edec7a16194cc68f1ffe45768f21d',
+25 silly install resolved     _id: 'angular-mocks@1.4.4',
+25 silly install resolved     _shasum: '2e7f85434596b33622bb35cd1719c533f01a14e6',
+25 silly install resolved     _from: 'angular-mocks@*',
+25 silly install resolved     _npmVersion: '2.0.2',
+25 silly install resolved     _nodeVersion: '0.10.26',
+25 silly install resolved     _npmUser: { name: 'angularcore', email: 'angular-core+npm@google.com' },
+25 silly install resolved     maintainers: [ [Object], [Object], [Object] ],
+25 silly install resolved     dist:
+25 silly install resolved      { shasum: '2e7f85434596b33622bb35cd1719c533f01a14e6',
+25 silly install resolved        tarball: 'http://registry.npmjs.org/angular-mocks/-/angular-mocks-1.4.4.tgz' },
+25 silly install resolved     directories: {},
+25 silly install resolved     _resolved: 'https://registry.npmjs.org/angular-mocks/-/angular-mocks-1.4.4.tgz',
+25 silly install resolved     readme: 'ERROR: No README data found!' } ]
+26 info install angular-mocks@1.4.4 into /usr/local/lib
+27 info installOne angular-mocks@1.4.4
+28 verbose installOne of angular-mocks to /usr/local/lib not in flight; installing
+29 verbose lock using /home/shye0000/.npm/_locks/angular-mocks-66f5d06ccb0ab7e3.lock for /usr/local/lib/node_modules/angular-mocks
+30 silly install write writing angular-mocks 1.4.4 to /usr/local/lib/node_modules/angular-mocks
+31 verbose unbuild lib/node_modules/angular-mocks
+32 silly gentlyRm /usr/local/lib/node_modules/angular-mocks is being purged from base /usr/local
+33 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/angular-mocks
+34 verbose tar unpack /home/shye0000/.npm/angular-mocks/1.4.4/package.tgz
+35 verbose tar unpacking to /usr/local/lib/node_modules/angular-mocks
+36 silly gentlyRm /usr/local/lib/node_modules/angular-mocks is being purged
+37 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/angular-mocks
+38 silly gunzTarPerm modes [ '755', '644' ]
+39 error tar.unpack untar error /home/shye0000/.npm/angular-mocks/1.4.4/package.tgz
+40 verbose unlock done using /home/shye0000/.npm/_locks/angular-mocks-66f5d06ccb0ab7e3.lock for /usr/local/lib/node_modules/angular-mocks
+41 verbose fstream_path /usr/local/lib/node_modules/angular-mocks
+42 verbose fstream_type Directory
+43 verbose fstream_class DirWriter
+44 verbose stack Error: EACCES, mkdir '/usr/local/lib/node_modules/angular-mocks'
+44 verbose stack     at Error (native)
+45 verbose fstream_stack /usr/local/lib/node_modules/npm/node_modules/fstream/lib/dir-writer.js:35:25
+45 verbose fstream_stack /usr/local/lib/node_modules/npm/node_modules/mkdirp/index.js:47:53
+45 verbose fstream_stack FSReqWrap.oncomplete (fs.js:95:15)
+46 verbose cwd /home/shye0000/Coding/Web/Paris-Museum/Paris Museum
+47 error Linux 3.16.0-4-amd64
+48 error argv "node" "/usr/local/bin/npm" "-g" "install" "angular-mocks" "--save-dev"
+49 error node v0.12.7
+50 error npm  v2.13.2
+51 error path /usr/local/lib/node_modules/angular-mocks
+52 error code EACCES
+53 error errno -13
+54 error Error: EACCES, mkdir '/usr/local/lib/node_modules/angular-mocks'
+54 error     at Error (native)
+54 error  { [Error: EACCES, mkdir '/usr/local/lib/node_modules/angular-mocks']
+54 error   errno: -13,
+54 error   code: 'EACCES',
+54 error   path: '/usr/local/lib/node_modules/angular-mocks',
+54 error   fstream_type: 'Directory',
+54 error   fstream_path: '/usr/local/lib/node_modules/angular-mocks',
+54 error   fstream_class: 'DirWriter',
+54 error   fstream_stack:
+54 error    [ '/usr/local/lib/node_modules/npm/node_modules/fstream/lib/dir-writer.js:35:25',
+54 error      '/usr/local/lib/node_modules/npm/node_modules/mkdirp/index.js:47:53',
+54 error      'FSReqWrap.oncomplete (fs.js:95:15)' ] }
+55 error Please try running this command again as root/Administrator.
+56 verbose exit [ -13, true ]
+57 verbose unbuild lib/node_modules/angular-mocks
+58 silly gentlyRm /usr/local/lib/node_modules/angular-mocks is being purged from base /usr/local
+59 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/angular-mocks
